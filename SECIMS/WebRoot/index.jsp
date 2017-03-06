@@ -6,6 +6,8 @@
     用户名：<input id="username" name="username" type="text"></input><br>  
     密  码：<input id="username" name="password" type="password"></input><br>  
     <input type="submit">  
+    <button>测试</button>
+    
 </form>  
 </body>
 </html>
