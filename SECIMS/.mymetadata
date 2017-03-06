@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="SECIMS"
+  id="myeclipse.1488789043273"
+  context-root="/SECIMS"
+  j2ee-spec="6.0"
+  archive="SECIMS.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

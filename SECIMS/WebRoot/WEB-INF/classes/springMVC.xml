@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:mvc="http://www.springframework.org/schema/mvc"  
+    xmlns:p="http://www.springframework.org/schema/p"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+            http://www.springframework.org/schema/beans/spring-beans.xsd  
+            http://www.springframework.org/schema/mvc  
+            http://www.springframework.org/schema/mvc/spring-mvc.xsd  
+            http://www.springframework.org/schema/context  
+            http://www.springframework.org/schema/context/spring-context.xsd"  
+    default-lazy-init="true"> 
+    
+    
+    <!-- 加载文件的路径 (属性文件读入)-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    
+    
+    <!-- 添加注解驱动 -->  
+    <mvc:annotation-driven />  
+    <!-- 默认扫描的包路径 -->  
+    <context:component-scan base-package="com.cuit.secims.mw.controller" />
+    
+    <context:annotation-config />
+    
+    
+    <!-- mvc:view-controller可以在不需要Controller处理request的情况，转向到设置的View -->  
+    <!-- 像下面这样设置，如果请求为/，则不通过controller，而直接解析为/index.jsp -->  
+    <mvc:view-controller path="/" view-name="index" />  
+    
+    
+    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">  
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />  
+        <!-- 配置jsp路径前缀 -->  
+        <property name="prefix" value="/" />  
+        <!-- 配置URl后缀 -->  
+        <property name="suffix" value=".jsp" />  
+    </bean>  
+    
+    
+    
+    <!-- 数据源，使用dbcp -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName" value="${datasource.driverClassName}" />
+		<property name="url" value="${datasource.url}" />
+		<property name="username" value="${datasource.username}" />
+		<property name="password" value="${datasource.password}" />
+		<property name="maxActive" value="10" />
+		<property name="maxIdle" value="5" />
+	</bean>
+    
+</beans> 
