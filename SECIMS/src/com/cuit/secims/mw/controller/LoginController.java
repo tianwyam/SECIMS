@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class LoginController {
 	
 	
+	
+	// 登陆
 	@RequestMapping("login")
 	public @ResponseBody String hello(String username,String password){
 		
