@@ -7,7 +7,7 @@
     密  码：<input id="username" name="password" type="password"></input><br>  
     <input type="submit">  
     <button>测试</button>
-    
+    <button>xp</button>
 </form>  
 </body>
 </html>
