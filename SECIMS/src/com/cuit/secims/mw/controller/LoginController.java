@@ -9,7 +9,7 @@ public class LoginController {
 	
 	
 	
-	// 登陆
+	// 登陆 + 页面
 	@RequestMapping("login")
 	public @ResponseBody String hello(String username,String password){
 		
