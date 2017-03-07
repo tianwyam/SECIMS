@@ -16,6 +16,9 @@
     <!-- 加载文件的路径 (属性文件读入)-->
     <context:property-placeholder location="classpath:jdbc.properties"/>
     
+    <!-- 设置静态资源的映射 -->
+    <mvc:resources location="/resource/" mapping="/resource/**" />
+    
     
     <!-- 添加注解驱动 -->  
     <mvc:annotation-driven />  
