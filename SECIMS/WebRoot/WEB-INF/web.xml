@@ -7,6 +7,7 @@
         
         
   <display-name>SECIMS</display-name>
+
   
     <!-- spring MVC的核心就是DispatcherServlet，使用springMVC的第一步就是将下面的servlet放入web.xml  
         servlet-name属性非常重要，默认情况下，DispatchServlet会加载这个名字-servlet.xml的文件，如下，就会加载  
@@ -31,6 +32,7 @@
     <url-pattern>/</url-pattern>  
   </servlet-mapping> 
   <!-- springMVC 配置    end -->
+
   
   
   <!-- 字符集过滤器 -->  

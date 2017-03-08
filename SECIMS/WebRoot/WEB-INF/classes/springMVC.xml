@@ -16,11 +16,14 @@
     <!-- 加载文件的路径 (属性文件读入)-->
     <context:property-placeholder location="classpath:jdbc.properties"/>
     
+    <!-- 设置静态资源的映射 -->
+    <mvc:resources location="/resource/" mapping="/resource/**" />
+    
     
     <!-- 添加注解驱动 -->  
     <mvc:annotation-driven />  
     <!-- 默认扫描的包路径 -->  
-    <context:component-scan base-package="com.cuit.secims.mw.controller" />
+    <context:component-scan base-package="com.cuit.secims.mw" />
     
     <context:annotation-config />
     
@@ -50,5 +53,18 @@
 		<property name="maxActive" value="10" />
 		<property name="maxIdle" value="5" />
 	</bean>
+	
+	<!-- sqlSessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+    	<!-- 加载 mybatis 的配置文件 -->
+    	<property name="configLocation" value="classpath:mybatis.xml"/>
+    	<!-- 数据源 -->
+    	<property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    
+    
+    <import resource="spring/spring-dao.xml"/>
+    
     
 </beans> 
