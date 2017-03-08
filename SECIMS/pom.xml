@@ -4,10 +4,10 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com</groupId>
-  <artifactId>SECIMS_TEST</artifactId>
+  <artifactId>SECIMS</artifactId>
   <packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>
-  <name>SECIMS_TEST Maven Webapp</name>
+  <name>SECIMS Maven Webapp</name>
   <url>http://maven.apache.org</url>
   
    <properties>
@@ -25,7 +25,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>4.9</version>
       <scope>test</scope>
     </dependency>
     
@@ -85,6 +85,6 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     
   </dependencies>
   <build>
-    <finalName>SECIMS_TEST</finalName>
+    <finalName>SECIMS</finalName>
   </build>
 </project>
