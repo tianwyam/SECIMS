@@ -21,6 +21,39 @@
 	    	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	    	<property name="mapperInterface" value="com.cuit.secims.mw.dao.IUserDao" />
 	    </bean>
+	    
+	    
+	    <!-- 学习计划  表 -->
+	    <bean id="plansDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	    	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	    	<property name="mapperInterface" value="com.cuit.secims.mw.dao.IStudyPlanDao" />
+	    </bean>
+	    
+	    <!-- 学习计划 详细表  -->
+	    <bean id="planDetailsDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	    	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	    	<property name="mapperInterface" value="com.cuit.secims.mw.dao.IStudyPlanDetailDao" />
+	    </bean>
+	    
+	     <!-- 月评考核管理表  -->
+	    <bean id="monthDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	    	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	    	<property name="mapperInterface" value="com.cuit.secims.mw.dao.IMonthReviewDao" />
+	    </bean>
+	    
+	    
+	    <!-- 周报  -->
+	    <bean id="weeklyDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	    	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	    	<property name="mapperInterface" value="com.cuit.secims.mw.dao.IWorkReportDao" />
+	    </bean>
+	    
+	    
+	    <!-- 学习论坛  -->
+	    <bean id="forumDao" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	    	<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	    	<property name="mapperInterface" value="com.cuit.secims.mw.dao.ILearningForumDao" />
+	    </bean>
     
 		
 		
