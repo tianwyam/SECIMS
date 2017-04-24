@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+<mapper namespace="com.cuit.secims.mw.dao.IWorkReportDao">
+
+
+	<!-- ========= 结果集 =========== -->
+
+	<resultMap type="WeekReportWork" id="weeklyBasic">
+	
+		<id property="weekRepId" column="weekRepId" />
+		<result property="sender" column="sender" />
+		<result property="recipient" column="recipient" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="startTime" column="startTime" />
+		<result property="endTime" column="endTime" />
+		<result property="createTime" column="createTime" />
+		<result property="status" column="status" />
+		<result property="userid" column="userid" />
+		
+	</resultMap>
+	
+	
+
+
+	<!-- ====== 具体的一些操作 ======= -->
+	
+	
+	<!-- 添加 周报 -->
+	<insert id="addWeekly" parameterType="WeekReportWork">
+		
+		<![CDATA[
+			INSERT INTO SECIMS.`WeekReportWork`(recipient,title,content,startTime,endTime,status,userid) 
+			VALUES(#{recipient},#{title},#{content},#{startTime},#{endTime},#{status},#{userid})
+		]]>
+		
+	</insert>
+	
+	
+	<!-- 根据 用户ID 查询所有的周报 -->
+	<select id="getWeeklyAll" resultMap="weeklyBasic" parameterType="int">
+		<![CDATA[
+			SELECT * FROM SECIMS.`WeekReportWork` w WHERE w.userid = #{userid}
+		]]>	
+	</select>
+	
+	
+	<!--  根据用户ID/状态  查询所以的已发送/保存中的周报 -->
+	<select id="getWeeklyByCondition" resultMap="weeklyBasic" parameterType="map">
+		<![CDATA[
+			SELECT * FROM SECIMS.`WeekReportWork` w WHERE w.userid = #{userid} AND w.status = #{status}
+		]]>	
+	</select>
+	
+	
+	
+	<!-- 删除已发送周报(将状态位改为D) -->
+	<update id="delWeeklyReport" parameterType="int">
+		<![CDATA[
+			UPDATE SECIMS.`WeekReportWork` t SET t.`status` = "D" WHERE t.`weekRepId` = #{id} 
+		]]>
+	</update>
+	
+	
+	<!-- 删除草稿箱中的周报（不可恢复） -->
+	<delete id="delWeeklyDraftBox" parameterType="int">
+		<![CDATA[
+			DELETE FROM SECIMS.`WeekReportWork`  WHERE weekRepId = #{id} 
+		]]>
+	</delete>
+	
+	
+	<!-- 发送周报（其实是直接把状态位改为 F ） -->
+	<update id="sendWeeklytoF" parameterType="int">
+		<![CDATA[
+			UPDATE SECIMS.`WeekReportWork` t SET t.`status` = "F" WHERE t.`weekRepId` = #{id} 
+		]]>
+	</update>
+	
+	
+	
+	
+</mapper>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+<mapper namespace="com.cuit.secims.mw.dao.IStudyPlanDetailDao">
+
+
+	<!-- ========= 结果集 =========== -->
+
+	<!-- 最基本的 学习计划  -->
+	<resultMap type="StudyPlanDetail" id="planDetailBasic">
+	
+		<id property="planDetailId" column="planDetailId" />
+		<result property="planId" column="planId" />
+		<result property="planDetailTitle" column="planDetailTitle" />
+		<result property="planDetailContent" column="planDetailContent" />
+		<result property="createTime" column="createTime" />
+		<result property="finishTime" column="finishTime" />
+		<result property="status" column="status" />
+		
+	</resultMap>
+	
+	<!-- 去重的 学习计划  -->
+	<resultMap type="StudyPlanDetail" id="planDetailToHeavy">
+	
+		<id property="planDetailId" column="planDetailId" />
+		<result property="planId" column="planId" />
+		<result property="planDetailTitle" column="planDetailTitle" />
+		<result property="planDetailContent" column="planDetailContent" />
+		<result property="createTime" column="d_createTime" />
+		<result property="finishTime" column="d_finishTime" />
+		<result property="status" column="d_status" />
+		
+	</resultMap>
+	
+
+
+	<!-- ====== 具体的一些操作 ======= -->
+	
+	<insert id="addPlanDetail" parameterType="StudyPlanDetail">
+		<![CDATA[
+			INSERT INTO SECIMS.`StudyPlanDetail`(planId,planDetailTitle,planDetailContent,status)
+			VALUES (#{planId},#{planDetailTitle},#{planDetailContent},#{status})
+		]]>
+	</insert>
+	
+	
+	
+	<!--  删除 计划 详情 -->
+	<delete id="deleteDetail" parameterType="int" >
+	
+		<![CDATA[
+			DELETE FROM SECIMS.`StudyPlanDetail` WHERE planDetailId = #{planDetailId}
+		]]>
+	
+	</delete>
+	
+	
+	
+	<!--  修改 计划 详情   -->
+	<update id="updateDetail" parameterType="StudyPlanDetail">
+	
+		UPDATE SECIMS.`StudyPlanDetail` d
+		<set>
+			<if test="planDetailTitle != null">d.planDetailTitle = #{planDetailTitle},</if>
+			<if test="planDetailContent != null">d.planDetailContent = #{planDetailContent},</if>
+			<if test="status != null">d.status = #{status},</if>
+		</set>
+		 , d.finishTime = now() 
+		WHERE d.planDetailId = #{planDetailId }
+	
+	</update>
+	
+	
+	
+	
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+<mapper namespace="com.cuit.secims.mw.dao.IMonthReviewDao">
+
+
+	<!-- ========= 结果集 =========== -->
+
+	<!-- 最基本的 学习计划  -->
+	<resultMap type="MonthReview" id="monthBasic">
+	
+		<id property="reviewId" column="reviewId" />
+		<result property="userid" column="userid" />
+		<result property="monthTitle" column="monthTitle" />
+		<result property="monthFileURL" column="monthFileURL" />
+		<result property="createTime" column="createTime" />
+		
+	</resultMap>
+	
+	
+
+
+	<!-- ====== 具体的一些操作 ======= -->
+	
+	<!-- 查询 月评PPT 情况 -->
+	<select id="getMonthByUserId" parameterType="int" resultType="MonthReview">
+	
+		<![CDATA[
+			SELECT * FROM SECIMS.MonthReview r WHERE r.userid = #{userid} ORDER BY reviewId DESC
+		]]>
+	
+	</select>
+	
+	
+	<!-- 增加月评PPT -->
+	<insert id="addMonthReview" parameterType="MonthReview">
+		
+		<![CDATA[
+			INSERT INTO SECIMS.MonthReview(userid,monthTitle,monthFileURL) 
+				VALUES(#{userid},#{monthTitle},#{monthFileURL})
+		]]>
+	
+	</insert>
+	
+	
+	<!-- 删除 上传月评PPT情况 -->
+	<delete id="delMonth" parameterType="int">
+	
+		<![CDATA[
+			DELETE FROM SECIMS.MonthReview WHERE reviewId = #{id}
+		]]>
+		
+	</delete>
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>

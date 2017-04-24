@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+<mapper namespace="com.cuit.secims.mw.dao.ILearningForumDao">
+
+
+	<!-- ========= 结果集 =========== 
+
+	<resultMap type="LearningForumPosts" id="">
+	
+		<id property="weekRepId" column="weekRepId" />
+		<result property="sender" column="sender" />
+		<result property="recipient" column="recipient" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="startTime" column="startTime" />
+		<result property="endTime" column="endTime" />
+		<result property="createTime" column="createTime" />
+		<result property="status" column="status" />
+		<result property="userid" column="userid" />
+		
+	</resultMap> -->
+	
+	
+
+
+	<!-- ====== 具体的一些操作 ======= -->
+	
+	
+	<!--  倒序获取 所有的帖子 -->
+	<select id="getForumPostsAll" resultType="LearningForumPosts">
+		<![CDATA[
+			SELECT * FROM SECIMS.LearningForumPosts p ORDER BY p.createTime DESC
+		]]>
+	</select>
+
+	
+	
+	<!-- 根据ID获取帖子信息 -->
+	<select id="getForumPostsById" resultType="LearningForumPosts">
+		<![CDATA[
+			SELECT * FROM SECIMS.LearningForumPosts p WHERE p.postsId = #{postsId}
+		]]>
+	</select>
+	
+	
+	
+	<!-- 发布 话题/增加 论坛帖子 -->
+	<insert id="addForumPosts" parameterType="LearningForumPosts">
+		<![CDATA[
+			INSERT INTO SECIMS.`learningforumposts`(title,type,content,userid,status) 
+			VALUES(#{title},#{type},#{content},#{userid},#{status});
+		]]>
+	</insert>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+</mapper>
