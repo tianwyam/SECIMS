@@ -1,5 +1,6 @@
 package com.cuit.secims.xp.enums;
 
+
 public enum ProjectStateEnum {
 	
 	WAIT(1,"项目等待接收"),
