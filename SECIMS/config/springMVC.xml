@@ -12,22 +12,15 @@
             http://www.springframework.org/schema/context/spring-context.xsd"  
     default-lazy-init="true"> 
     
-    
-    <!-- 加载文件的路径 (属性文件读入)-->
-    <context:property-placeholder location="classpath:jdbc.properties"/>
-    
     <!-- 设置静态资源的映射 -->
      <mvc:default-servlet-handler/>
-    <mvc:resources location="/resource/" mapping="/resource/**" />
     
-    <mvc:resources location="/res/index.jsp" mapping="/res/index.jsp" />
+    <mvc:resources location="login.jsp" mapping="login.jsp" />
        
-    
-    
     <!-- 添加注解驱动 -->  
-    <mvc:annotation-driven />  
+    <mvc:annotation-driven />
     <!-- 默认扫描的包路径 -->  
-    <context:component-scan base-package="com.cuit.secims.mw" />
+    <context:component-scan base-package="com.cuit.secims" />
     
     <context:annotation-config />
     
@@ -40,45 +33,12 @@
     	 
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />  
         <!-- 配置jsp路径前缀 -->  
-        <property name="prefix" value="secims/person/views/" />  
+       <!--  <property name="prefix" value="secims/person/views/" />   -->
+        <property name="prefix" value="/" />  
         <!-- 配置URl后缀 -->  
         <property name="suffix" value=".jsp" />  
         <property name="order" value="10" />
     </bean>
-    
-    
-    
-    <!-- 数据源，使用dbcp -->
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
-		destroy-method="close">
-		<property name="driverClassName" value="${datasource.driverClassName}" />
-		<property name="url" value="${datasource.url}" />
-		<property name="username" value="${datasource.username}" />
-		<property name="password" value="${datasource.password}" />
-		<property name="maxActive" value="10" />
-		<property name="maxIdle" value="5" />
-	</bean>
-	
-	<!-- sqlSessionFactory -->
-    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-    	<!-- 加载 mybatis 的配置文件 -->
-    	<property name="configLocation" value="classpath:mybatis.xml"/>
-    	<!-- 数据源 -->
-    	<property name="dataSource" ref="dataSource"/>
-    </bean>
-    
-    
-    
-      
-    <!-- SpringMVC上传文件时，需要配置MultipartResolver处理器 -->  
-    <bean id="multipartResolver" 
-    	class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
-    	
-        <property name="defaultEncoding" value="UTF-8"/>  
-        <!-- 指定所上传文件的总大小不能超过10M。注意maxUploadSize属性的限制不是针对单个文件，而是所有文件的容量之和 -->  
-        <property name="maxUploadSize" value="10240000"/>  
-    </bean>
-    
     
     <!--  加载 mybatis配置文件Dao层 -->
     <import resource="spring/spring-dao.xml"/>
