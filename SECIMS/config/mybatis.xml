@@ -17,8 +17,6 @@
 		<package name="com.cuit.secims.xp.entity"/>
 	</typeAliases>
 	
-	
-	
 	<!-- 配置的映射文件 -->
 	<mappers>
 		<mapper resource="mybatis/mapper/StudyPlanMapper.xml"/>
