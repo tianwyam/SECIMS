@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cuit.secims.xp.dao.ProjectDao">
+
+	<resultMap type="Project" id="ProjectResult">
+		<result property="id" column="id"/>
+		<result property="projectName" column="projectName"/>
+		<result property="instruction" column="instruction"/>
+		<result property="finishDate" column="finishDate"/>
+		<result property="postName" column="postName"/>
+		<result property="phone" column="phone"/>
+		<result property="status" column="status"/>
+	</resultMap>
+
+	<insert id="addProject" parameterType="Project">
+		insert into t_project values(#{id},#{projectName},#{instruction},#{finishDate},#{postName},#{phone},#{status})
+	</insert>
+	
+	<insert id="addProjectDoc" parameterType="Map">
+		insert into t_project_doc values(#{projectId},#{documents},#{operator},#{createTime})
+	</insert>
+	
+	<select id="getProjectList" parameterType="Map" resultMap="ProjectResult">
+		select * from t_project
+		<where>
+			<if test="status!=null">
+				status = #{status}
+			</if>
+		</where>
+	</select>
+	
+<!-- 	<select id="getProjectInfoById" parameterType="Integer" resultType="Project">
+		select
+			p.id,
+			p.projectName,
+			p.instruction,
+			p.finishDate,
+			p.postName,
+			p.phone,
+			d.documents "projectDoc.documents", 
+			d.createTime "projectDoc.createTime"
+		from t_project p left outer join t_project_doc d on p.id = d.projectId where p.id=#{projectId};
+	</select> -->
+	
+	<select id="getProjectInfoById" parameterType="Integer" resultType="Project">
+		select * from t_project where id = #{projectId}
+	</select>
+	
+	<select id="getProjectDocById" parameterType="Integer" resultType="ProjectDoc">
+		select * from t_project_doc where projectId = #{projectId}
+	</select>
+	
+	<update id="updateStatus" parameterType="Map">
+		update t_project set status = #{status} where id = #{id} 
+	</update>
+	
+	<select id="getAutoIncrement" parameterType="String" resultType="Integer">
+		select AUTO_INCREMENT from INFORMATION_SCHEMA.TABLES where TABLE_NAME=#{tableName}
+	</select>
+	
+	<delete id="deleteProject" parameterType="Integer">
+		delete from t_project where id=#{projectId} 
+	</delete>
+	
+	<delete id="deleteProjectDoc" parameterType="Integer">
+		delete from t_project_doc where projectId=#{projectId}
+	</delete>
+	
+	<update id="updateProjectById" parameterType="Project">
+		update t_project set projectName=#{projectName},instruction=#{instruction},finishDate=#{finishDate},postName=#{postName},phone=#{phone} where id=#{id}
+	</update>
+	
+	<update id="updateProReceiver" parameterType="Map">
+		update t_project set receiver=#{receiver} where id=#{projectId}
+	</update>
+	
+	<select id="getProjectInfoByReceiver" parameterType="String" resultType="Project">
+		select * from t_project where receiver = #{name}
+	</select>
+	
+</mapper>

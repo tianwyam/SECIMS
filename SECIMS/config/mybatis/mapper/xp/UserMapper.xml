@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cuit.secims.xp.dao.UserDao">
+
+	<resultMap type="User" id="UserResult">
+		<result property="id" column="id"/>
+		<result property="userName" column="userName"/>
+		<result property="password" column="password"/>
+		<result property="create_time" column="create_time"/>
+	</resultMap>
+	
+	<select id="getByUserName" parameterType="String" resultMap="UserResult">
+		select * from t_user where userName=#{userName} 
+	</select>
+	
+	<select id="getRoles" parameterType="String" resultType="String">
+		select r.roleName from t_user u,t_role r where u.roleId=r.id and u.userName=#{userName}
+	</select>
+	
+	<select id="getPermissions" parameterType="String" resultType="String">
+		select p.permissionName from t_user u,t_role r,t_permission p where u.roleId=r.id and p.roleId=r.id and u.userName=#{userName}
+	</select>
+
+	<update id="updatePassword" parameterType="User">
+		update t_user set password=#{password} where userName=#{userName}
+	</update>
+	
+	<insert id="addUser" parameterType="Map">
+		insert into t_user(userName,password,roleId) values(#{userName},#{password},#{roleId})
+	</insert>
+	
+	<select id="getAllUser" parameterType="Map" resultType="User">
+		select 
+			u.userName,
+			u.createTime,
+			r.type "role"
+			from t_user u left outer join t_role r on u.roleId = r.id
+			order by u.createTime desc
+		<if test="start!=null and size!=null">
+			limit #{start},#{size}
+		</if>
+	</select>
+	
+	<select id="findUserByName" parameterType="String" resultMap="UserResult">
+		select * from t_user where userName like '%${value}%'
+	</select>
+	
+	<select id="getTotalRecords" resultType="Integer">
+		select count(*) from t_user;
+	</select>
+	
+	<delete id="deleteUser" parameterType="String">
+		delete from t_user where userName=#{userName}
+	</delete>
+	
+	<insert id="addUserInfo" parameterType="UserInfo">
+		insert into t_user_info values(#{id},#{actualName},#{email},#{phone});
+	</insert>
+	
+	<select id="getUserIdByName" parameterType="String" resultType="Integer">
+		select id from t_user where userName = #{userName}
+	</select>
+	
+	<select id="getUserInfoById" parameterType="Integer" resultType="UserInfo">
+		select * from t_user_info where id = #{id};
+	</select>
+	
+	<update id="updateUserInfoById" parameterType="UserInfo">
+		update t_user_info set actualName=#{actualName},email=#{email},phone=#{phone} where id = #{id}
+	</update>
+</mapper> 
