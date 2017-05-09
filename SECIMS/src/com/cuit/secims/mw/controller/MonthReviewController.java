@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.cuit.secims.mw.pojo.MonthReview;
 import com.cuit.secims.mw.service.MonthReviewSV;
+import com.cuit.secims.mw.util.CommonConst;
 import com.cuit.secims.mw.util.PPT2ImgUtil;
 import com.cuit.secims.mw.util.Result;
 import com.google.gson.Gson;
@@ -56,18 +57,31 @@ public class MonthReviewController {
 	}
 	
 	
-	// 上传月评PPT
+	// 上传月评PPT files+userid+monthfiles
 	@RequestMapping(value="uploadPPT",method=RequestMethod.POST)
 	public String uploadPPTFile(@RequestParam MultipartFile monthFile,
 			HttpServletRequest request){
 		
 		// 获取 将要存储的文件夹 全路径
-		String fileUrl = request.getSession().getServletContext().getRealPath("MonthFiles");
+		String root = request.getSession()
+						.getServletContext()
+						.getRealPath(CommonConst.DIR_SEPARATOR1);
+						
+		
 		String fileName = null;
+		// 用户ID 后面改
+		int userid = 1;
+		
 		
 		MonthReview month = new MonthReview();
-		month.setUserid(1); // 设置用户ID
+		month.setUserid(userid); // 设置用户ID
 		
+		String monthPath = CommonConst.FILES_DIR
+						+ CommonConst.DIR_SEPARATOR1 + userid
+						+ CommonConst.DIR_SEPARATOR1 + CommonConst.MONTH_FILE_DIR;
+		
+		// 文件目录有+userID+monthFiles
+		String fileUrl =root + monthPath;
 		
 		// 上传的文件
 		if (!monthFile.isEmpty()) {
@@ -98,7 +112,14 @@ public class MonthReviewController {
 				
 				// 文件名 不包括后缀名
 				month.setMonthTitle(split[0]);
-				month.setMonthFileURL("MonthFiles\\\\"+fileName);
+				
+				// 文件路径 files+userId+monthFiles
+				String monthfileurl = CommonConst.FILES_DIR+CommonConst.DIR_SEPARATOR2
+									+ userid+CommonConst.DIR_SEPARATOR2
+									+ CommonConst.MONTH_FILE_DIR;
+				
+				
+				month.setMonthFileURL(monthfileurl+CommonConst.DIR_SEPARATOR2+fileName);
 				
 				int count = this.service.addMonthReview(month);
 				
@@ -126,15 +147,26 @@ public class MonthReviewController {
 		
 		Result result = new Result();
 		
+		int userid = 1;
+		
 		// 先删除数据库中的表数据
 		int count = this.service.delMonth(reviewId);
 		
 		// 删除成功后，再删除上传的PPT文件
 		if (count > 0 ) {
 			
-			String path = request.getSession().getServletContext().getRealPath("\\");
+			String path = request.getSession()
+						.getServletContext().getRealPath(CommonConst.DIR_SEPARATOR1);
+			
 			String filePath = path+monthFileURL;
-			String imgPath = path+"MonthFiles\\"+reviewId;
+			
+			String  imgHead = path 
+					+CommonConst.FILES_DIR+CommonConst.DIR_SEPARATOR1
+					+userid+CommonConst.DIR_SEPARATOR1
+					+CommonConst.MONTH_FILE_DIR+CommonConst.DIR_SEPARATOR1;
+			
+			
+			String imgPath = imgHead+reviewId;
 			
 			File pptFile = new File(filePath);
 			
@@ -181,14 +213,24 @@ public class MonthReviewController {
 		request.setCharacterEncoding("UTF-8");
 		
 		ArrayList<String> imgURList = new ArrayList<>();
+		int userid = 1;
 		
 		//获取项目根目录
-		String path = request.getSession().getServletContext().getRealPath("\\");
-		String PPTFilePath = path+monthFileURL.replace("-", "\\");
+		String path = request.getSession()
+						.getServletContext()
+						.getRealPath(CommonConst.DIR_SEPARATOR1);
+		
+		String PPTFilePath = path+CommonConst.DIR_SEPARATOR1+monthFileURL;
 		
 		PPTFilePath = URLDecoder.decode(PPTFilePath, "UTF-8");
 		
-		String imgFilePath = path+"MonthFiles\\"+reviewId;
+		// 文件路径 files+userID+monthFiles
+		String monthfileurl = CommonConst.FILES_DIR+CommonConst.DIR_SEPARATOR1
+				+ userid+CommonConst.DIR_SEPARATOR1
+				+ CommonConst.MONTH_FILE_DIR;
+		
+		String imgFilePath = path+CommonConst.DIR_SEPARATOR1
+					+monthfileurl+CommonConst.DIR_SEPARATOR1+reviewId;
 		
 		boolean isSuccess = PPT2ImgUtil.doPPT2Img(PPTFilePath, imgFilePath,imgURList);
 		
@@ -201,7 +243,18 @@ public class MonthReviewController {
 		
 		mad.addObject("imgURLs", imgURList);
 		mad.addObject("imgTotalNum", imgURList.size());
-		mad.addObject("imgHead", "/SECIMS/MonthFiles/"+reviewId);
+		
+		
+		String root = request.getSession()
+					.getServletContext().getContextPath();
+		
+		String  imgHead = root+CommonConst.DIR_SEPARATOR3
+				+CommonConst.FILES_DIR+CommonConst.DIR_SEPARATOR3
+				+userid+CommonConst.DIR_SEPARATOR3
+				+CommonConst.MONTH_FILE_DIR+CommonConst.DIR_SEPARATOR3;
+		
+		
+		mad.addObject("imgHead", imgHead+reviewId);
 		
 		return mad;
 	}
