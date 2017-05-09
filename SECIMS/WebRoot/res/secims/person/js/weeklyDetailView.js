@@ -70,7 +70,7 @@ function delWeeklyDraftBoxOperation(id){
 
 
 // 发送 周报
-function sendWeekly(weekly){
+function sendWeekly(weekRepId){
 	
 	console.log("发送周报 开始");
 	
@@ -79,7 +79,9 @@ function sendWeekly(weekly){
 		url:"/SECIMS/res/sendWeeklytoF",
 		async:true,
 		dataType:'json',
-		data:weekly,
+		data:{
+			weekRepId : weekRepId
+		},
 		success: function(data){
 			
 			if(data.success){

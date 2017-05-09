@@ -150,10 +150,11 @@ $(function() {
 
 					console.log("发送周报成功！");
 					
-					layer.msg('周报发送成功！', {icon: 6,time:3000});
+					layer.msg('周报发送成功！即将跳转到 已发送周报页面 ...', {icon: 6,time:3000});
 					
 					// 跳转到 已发送周报列表页面
-					window.location.href = "/SECIMS/res/getWeeklyReport" ;
+					setTimeout('window.location.href = "/SECIMS/res/getWeeklyReport";',3000);
+					
 
 				}
 
@@ -164,7 +165,7 @@ $(function() {
 		
 		
 		// 销毁 
-		$('.summernote').summernote('destroy');
+//		$('.summernote').summernote('destroy');
 	
 		console.log("发送周报结束");
 	
@@ -186,11 +187,11 @@ $(function() {
 			
 			layer.msg('OK! 即将跳转到已发送周报列表，请稍等。。。。。。', {
 				icon: 1,
-				time:40000
+				time:3000
 			});
 			
 			// 跳转到 已发送周报列表页面
-			window.location.href = "/SECIMS/res/getWeeklyReport" ;
+			setTimeout('window.location.href = "/SECIMS/res/getWeeklyReport";',3000);
 			
 		}, function() {
 			layer.msg('OK! 请继续。。。。。。', {
@@ -296,10 +297,11 @@ $(function() {
 
 					console.log("保存到草稿箱成功！");
 					
-					layer.msg('保存到草稿箱成功！', {icon: 6,time:3000});
+					layer.msg('保存到草稿箱成功！即将跳转到 草稿箱 .....', {icon: 6,time:3000});
 					
 					// 跳转到 草稿箱
-					window.location.href = "/SECIMS/res/getWeeklyDraftBox" ;
+					setTimeout('window.location.href = "/SECIMS/res/getWeeklyDraftBox" ;',3000);
+					
 
 				}
 
@@ -310,7 +312,7 @@ $(function() {
 		
 		
 		// 销毁 
-		$('.summernote').summernote('destroy');
+//		$('.summernote').summernote('destroy');
 	
 		console.log("保存到草稿箱结束");
 		
@@ -370,15 +372,15 @@ function checkDate(startTime, endTime) {
 function RemoveBlankSpaceAndNewlineOperator(html){
 	
 	// 去掉空格及换行符
-	html = html.replace(/\ +/g, "").replace(/[ ]/g, "").replace(/[\r\n]/g, "");
-
-	html = html.replace(/<\/?[^>]*>/g, ''); //去除HTML tag
-	html = html.replace(/[ | ]*\n/g, '\n'); //去除行尾空白
-	html = html.replace(/\n[\s| | ]*\r/g, '\n'); //去除多余空行
-	html = html.replace(/ /ig, ''); //去掉 
-	html = html.replace(/^[\s　]+|[\s　]+$/g, ""); //去掉全角半角空格
-	html = html.replace(/[\r\n]/g, ""); //去掉回车换行
-	html = html.replace(/^\s*|\s*$/g, "");
+////	html = html.replace(/\ +/g, "").replace(/[ ]/g, "").replace(/[\r\n]/g, "");
+////
+////	html = html.replace(/<\/?[^>]*>/g, ''); //去除HTML tag
+//	html = html.replace(/[ | ]*\n/g, '\n'); //去除行尾空白
+//	html = html.replace(/\n[\s| | ]*\r/g, '\n'); //去除多余空行
+//	html = html.replace(/ /ig, ''); //去掉 
+//	html = html.replace(/^[\s　]+|[\s　]+$/g, ""); //去掉全角半角空格
+//	html = html.replace(/[\r\n]/g, ""); //去掉回车换行
+//	html = html.replace(/^\s*|\s*$/g, "");
 		
 	return html;
 	

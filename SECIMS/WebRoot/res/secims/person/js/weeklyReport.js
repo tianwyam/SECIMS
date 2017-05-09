@@ -49,11 +49,11 @@ function flushWeeklyReportList(id){
 
 
 // 查看周报情况
-function ToViewWeekly(weekly){
+function ToViewWeekly(weekRepId){
 	
-	console.log("查看周报情况： "+weekly);
+	console.log("查看周报情况： "+weekRepId);
 	
-	window.location.href = "/SECIMS/res/getWeeklyDetailView?"+weekly;
+	window.location.href = "/SECIMS/res/getWeeklyDetailView?weekRepId="+weekRepId;
 	
 }
 
