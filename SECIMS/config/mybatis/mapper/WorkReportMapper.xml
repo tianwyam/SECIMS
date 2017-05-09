@@ -57,6 +57,14 @@
 	</select>
 	
 	
+	<!--  根据ID 查询周报 -->
+	<select id="getWeeklyByWeekRepId" resultMap="weeklyBasic" parameterType="int">
+		<![CDATA[
+			SELECT * FROM SECIMS.`WeekReportWork` w WHERE w.`weekRepId` = #{id} 
+		]]>	
+	</select>
+	
+	
 	
 	<!-- 删除已发送周报(将状态位改为D) -->
 	<update id="delWeeklyReport" parameterType="int">
