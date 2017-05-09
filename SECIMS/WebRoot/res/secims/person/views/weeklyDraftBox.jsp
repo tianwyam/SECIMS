@@ -60,7 +60,7 @@
 	                                </td>
 	                                <td class="text-right mail-date">${weekly.createTime.year }年${weekly.createTime.month }月${weekly.createTime.day }日</td>
 	                                <td class="text-right">
-		                                <button class="btn btn-white btn-sm" onclick="ToViewWeekly('${weekly}')">
+		                                <button class="btn btn-white btn-sm" onclick="ToViewWeekly('${weekly.weekRepId}')">
 		                                	<span class="glyphicon glyphicon-folder-open"></span>  查看
 		                                </button>
 		                                <button class="btn btn-white btn-sm" onclick="delWeeklyDraftBox('${weekly.weekRepId}')">

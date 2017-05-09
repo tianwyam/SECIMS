@@ -5,7 +5,7 @@
 <html>
   <head>
   
-    <title>已上传的周报</title>
+    <title>已发送的周报</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">  
     
     <%-- 加载公共 JS/CSS --%>
@@ -60,7 +60,7 @@
 	                                </td>
 	                                <td class="text-right mail-date">${weekly.createTime.year }年${weekly.createTime.month }月${weekly.createTime.day }日</td>
 	                                <td class="text-right">
-		                                <button class="btn btn-white btn-sm" onclick="ToViewWeekly('${weekly}')">
+		                                <button class="btn btn-white btn-sm" onclick="ToViewWeekly('${weekly.weekRepId}')">
 		                                	<span class="glyphicon glyphicon-folder-open"></span>  查看
 		                                </button>
 		                                <button class="btn btn-white btn-sm" onclick="delWeeklyReport('${weekly.weekRepId}')">

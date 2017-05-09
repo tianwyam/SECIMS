@@ -26,7 +26,7 @@
 	                
 	                    <div class="pull-right tooltip-demo">
 	                        <button onclick="self.location=document.referrer;" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="返回">
-	                        	<span class="glyphicon glyphicon-share-alt" ></span> 返回上一步
+	                        	<span class="glyphicon glyphicon-share-alt" ></span> 返回
 	                        </button>
 	                    </div>
 	                    
@@ -59,7 +59,7 @@
 	                    
 	                    	<!-- 发送按钮就只有 是删除的/草稿箱里的，如果是已经发送了的就不允许发送了 -->
 	                    	<c:if test="${weekly.status != 'F' }">
-		                        <a class="btn btn-sm btn-primary" href="#" onclick="sendWeekly('${weekly}')">
+		                        <a class="btn btn-sm btn-primary" href="#" onclick="sendWeekly('${weekly.weekRepId}')">
 		                        	<i class="layui-icon">&#xe609;</i>  发送
 		                        </a>
 	                        </c:if>
