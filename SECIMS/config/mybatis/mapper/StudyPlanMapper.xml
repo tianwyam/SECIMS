@@ -34,6 +34,7 @@
 		<result property="userid" column="userid" />
 		<result property="status" column="status" />
 		<result property="progress" column="progress" />
+		<result property="score" column="score" />
 
 	</resultMap>
 
@@ -49,6 +50,7 @@
 		<result property="userid" column="userid" />
 		<result property="status" column="s_status" />
 		<result property="progress" column="progress" />
+		<result property="score" column="score" />
 
 		<!-- collection 一对多 -->
 		<collection property="studyPlanDetails"
@@ -69,6 +71,7 @@
 		<result property="userid" column="userid" />
 		<result property="status" column="s_status" />
 		<result property="progress" column="progress" />
+		<result property="score" column="score" />
 
 		<!-- collection 一对多 -->
 		<collection property="studyPlanDetails"
@@ -100,7 +103,10 @@
 	<!-- 删除一条计划 通过planID -->
 	<delete id="delPlan" parameterType="int">
 		<![CDATA[
-			DELETE FROM SECIMS.StudyPlan WHERE planId = #{id}
+			DELETE s.*,d.* 
+			FROM secims.`studyplan` s LEFT JOIN secims.`studyplandetail`  d 
+			ON s.`planId` = d.`planId` 
+			WHERE s.`planId` = #{id}
 		]]>
 
 	</delete>
@@ -219,7 +225,10 @@
 	<!-- 修改 计划 状态/减少 -->
 	<update id="subProgress" parameterType="int">
 		<![CDATA[
-			UPDATE SECIMS.`studyplan` SET progress = (CASE WHEN progress < 0 THEN 0 ELSE progress-(100/7.0) END )  , finishTime = NOW() WHERE planId = #{planId}
+			UPDATE SECIMS.`studyplan` 
+			SET progress = (CASE WHEN progress < 0 THEN 0 ELSE progress-(100/7.0) END )  
+				, finishTime = NOW() 
+			WHERE planId = #{planId}
 		]]>
 	</update>
 	
@@ -230,6 +239,25 @@
 			SELECT COUNT(0) FROM SECIMS.`StudyPlan` P WHERE P.`status` = #{status} and P.userid = #{userid} ;
 		]]>
 	</select>
+
+
+	<!--  批量更新 评分/录入成绩 -->
+	<update id="updateScores" parameterType="list">
+		update SECIMS.`StudyPlan`
+		<trim prefix="set" suffixOverrides=",">
+			<trim prefix="score = case" suffix="end,">
+				<foreach collection="list" item="i" index="index">
+					when planId=#{i.planId} then #{i.score}
+				</foreach>
+			</trim>
+		</trim>
+		, status = 'T' 
+		where planId in
+		<foreach collection="list" item="i" open="(" separator="," close=")">
+			#{i.planId}
+		</foreach>
+	</update>
+	
 	
 	
 
