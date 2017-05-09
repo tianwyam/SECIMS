@@ -75,7 +75,7 @@ function writePlan(plan){
 	
 	console.log("plan  " + plan);
 	
-	var planAttrs = plan.split(",");
+	var planAttrs = plan.split("&");
 	
 	
 	for (var i = 0 ; i < planAttrs.length ; i++) {
