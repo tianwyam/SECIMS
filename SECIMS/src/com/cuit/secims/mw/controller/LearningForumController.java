@@ -1,5 +1,6 @@
 package com.cuit.secims.mw.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -7,10 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cuit.secims.mw.pojo.LearningForumPosts;
 import com.cuit.secims.mw.service.LearningForumSV;
+import com.cuit.secims.mw.util.CommonUtils;
+import com.cuit.secims.mw.util.Result;
+import com.google.gson.Gson;
 
 /**
  * @Description 学习论坛
@@ -101,10 +106,85 @@ public class LearningForumController {
 	
 	
 	
+	// 跳转到 我发布的帖子页面
+	@RequestMapping("getLearningForumMyPosts")
+	public ModelAndView getLearningForumMyPostsPage(){
+		
+		// 用户ID 要修改
+		List<LearningForumPosts> posts = this.service.getForumPostsByUserId(1); 
+		
+		ModelAndView mav = new ModelAndView("learningForumMyPosts");
+		mav.addObject("posts", posts);
+		mav.addObject("postsNum", posts.size());
+		
+		return mav;
+	}
 	
 	
 	
 	
+	// 跳转到 我回复的帖子页面
+	@RequestMapping("getLearningForumMyReply")
+	public ModelAndView getLearningForumMyReplyPage() {
+
+		// 用户ID 要修改
+		List<LearningForumPosts> posts = this.service.getForumPostsByUserReply(1); 
+																				
+
+		ModelAndView mav = new ModelAndView("learningForumMyReply");
+		mav.addObject("posts", posts);
+		mav.addObject("postsNum", posts.size());
+
+		return mav;
+	}
+	
+	
+	
+	// 删除 我的帖子
+	@RequestMapping(value="delForumPosts",method=RequestMethod.POST)
+	public @ResponseBody String delForumPosts(int postsId){
+		
+		Result result = new Result();
+		
+		log.info("将要删除的帖子ID: "+postsId);
+		
+		int count = this.service.delForumPosts(postsId);
+		if (count > 0) {
+			result.setSuccess(true);
+		}
+		
+		return new Gson().toJson(result);
+	}
+	
+	
+	
+	
+	
+	
+	//#################### 学习计划类型 #####################//
+	
+	@RequestMapping(value="getLearningForumType")
+	public ModelAndView getLearningForumTypePage(String type){
+		
+		// 处理一下中文乱码问题
+		type = CommonUtils.dealStringEncoding(type).trim();
+		
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("type", type);
+		
+		log.info("按照类型查找：type - "+type);
+		
+		// 获取帖子
+		List<LearningForumPosts> posts = this.service.getForumPostsByconditions(map);
+		
+		ModelAndView mav = new ModelAndView("learningForumType");
+		mav.addObject("posts", posts);
+		mav.addObject("postsType", type);
+		mav.addObject("postsNum", posts.size());
+		
+		
+		return mav;
+	}
 	
 	
 	
