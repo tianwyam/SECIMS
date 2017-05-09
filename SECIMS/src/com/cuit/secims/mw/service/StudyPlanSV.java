@@ -1,7 +1,9 @@
 package com.cuit.secims.mw.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -136,4 +138,31 @@ public class StudyPlanSV {
 		return this.plansDao.getPlansNumByUserIdAndStatus(map);
 	}
 
+	
+	
+	
+	// 批量修改成绩
+	public int updateScores(Double[] scores, int[] planIds){
+		
+		
+		int len = planIds.length;
+		List<Map<String, Object>> list = new ArrayList<>();
+		
+		for (int i = 0; i < len; i++) {
+			
+			HashMap<String, Object> map = new HashMap<>();
+			map.put("planId", planIds[i]);
+			map.put("score", scores[i]);
+			list.add(map);		
+		}
+		
+		
+		return this.plansDao.updateScores(list);
+	}
+	
+	
+	
+	
+	
+	
 }
