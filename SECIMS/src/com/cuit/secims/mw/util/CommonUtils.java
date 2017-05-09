@@ -56,6 +56,23 @@ public class CommonUtils {
 	
 	
 	
+	/**
+	 * 获取日期形式的字符串格式
+	 * @param time 要转换的日期
+	 * @param pattern 格式
+	 * @return
+	 */
+	public  static String getStringfromDate(Date time,String pattern){
+		
+		// 获取的字符串格式是 yyyy年MM月dd日 HH:mm:ss(EEE)
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+		
+		return sdf.format(time);
+		
+	}
+	
+	
+	
 	
 	
 	
