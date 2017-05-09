@@ -129,6 +129,8 @@
                         </a>
                         <ul class="nav nav-second-level">
                             <li><a class="J_menuItem" href="/SECIMS/res/getLearningForum">学习论坛</a>
+                            <li><a class="J_menuItem" href="/SECIMS/res/getLearningForumMyPosts">我发布的帖子</a>
+                            <li><a class="J_menuItem" href="/SECIMS/res/getLearningForumMyReply">我回复的帖子</a>
                             </li>
                         </ul>
                     </li>
