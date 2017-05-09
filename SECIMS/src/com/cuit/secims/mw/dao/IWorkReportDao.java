@@ -27,6 +27,9 @@ public interface IWorkReportDao {
 	// 根据用户ID/状态  查询所以的已发送/保存中的周报
 	public List<WeekReportWork> getWeeklyByCondition(Map map) ;
 	
+	// 根据ID获取周报
+	public WeekReportWork getWeeklyByWeekRepId(int weekRepId);
+	
 	
 	//删除已发送周报(将状态位改为D)
 	public int delWeeklyReport(int id);
