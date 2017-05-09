@@ -170,7 +170,7 @@ function flushMonthList(id){
 
 function toMonthReview(id,filePath){
 	
-	filePath = filePath.replace("\\","-");
+//	filePath = filePath.replace("\\","-");
 	
 	filePath = encodeURI(filePath); 
 	filePath = encodeURI(filePath); 
