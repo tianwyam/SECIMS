@@ -25,6 +25,9 @@ public class StudyPlan implements Serializable{
 	private int userid ; // 学习计划制定人
 	private String status ; // 状态 F：完成/ E：正在执行
 	private double progress ; // 完成进度情况
+	
+	private double score ; // 评分
+	
 
 	
 	
@@ -136,16 +139,27 @@ public class StudyPlan implements Serializable{
 	}
 
 	
-	
+	public double getScore() {
+		return score;
+	}
+
+
+	public void setScore(double score) {
+		this.score = score;
+	}
+
+
 
 	@Override
 	public String toString() {
-		return "planId=" + planId + ", planTitle=" + planTitle
-				+ ", planType=" + planType + ", planContent=" + planContent
-				+ ", createTime=" + createTime + ", finishTime=" + finishTime
-				+ ", userid=" + userid + ", status=" + status
-				+ ", studyPlanDetails=" + studyPlanDetails ;
+		return "planId=" + planId + "&planTitle=" + planTitle + "&planType="
+				+ planType + "&planContent=" + planContent + "&createTime="
+				+ createTime + "&finishTime=" + finishTime + "&userid="
+				+ userid + "&status=" + status + "&progress=" + progress
+				+ "&score=" + score;
 	}
+
+
 
 
 
