@@ -1,5 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
 <!DOCTYPE HTML>
@@ -14,6 +14,9 @@
 	<link rel="stylesheet" href="/SECIMS/res/summernote/summernote.css">
 	<link rel="stylesheet" href="/SECIMS/res/summernote/summernote-bs3.css">
 	
+	
+	
+	<script type="text/javascript" src="/SECIMS/res/secims/person/js/webSocketJS.js"></script>
 	<script type="text/javascript" src="/SECIMS/res/summernote/summernote.min.js"></script>
 	<script type="text/javascript" src="/SECIMS/res/secims/person/js/learningForumDetail.js"></script>
 
@@ -31,7 +34,7 @@
 
 						<div class="pull-right tooltip-demo">
 							<a href="javascript:self.location=document.referrer;" class="btn btn-white btn-sm"> 
-								<span class="glyphicon glyphicon-share-alt" ></span> 返回上一步 
+								<span class="glyphicon glyphicon-share-alt" ></span> 返回
 							</a>
 						</div>
 
@@ -41,10 +44,13 @@
 							</div>
 							<h2>${post.title }</h2>
 							<br />
+							<span class="label label-warning">${post.type }</span>
+							<br />
+							<br />
 							<span>发布于：${post.createTimeString }</span>
 						</div>
 						<hr />
-						<div class="p-xs">
+						<div class="p-xs" id="postContent">
 							<p>${post.content }</p>
 						</div>
 
@@ -62,33 +68,22 @@
 
 							<div class="col-md-12 ">
 								<div class="chat-discussion" id="msgBoxId">
+								
+									<span id="postsId" style="display: none;">${post.postsId }</span>
 
-									<div class="chat-message">
-										<img class="message-avatar" src="/SECIMS/res/secims/person/img/a1.jpg" alt="">
-										<div class="message">
-											<a class="message-author" href="#"> 颜文字君</a> 
-											<span class="message-date"> 2015-02-02 18:39:23 </span> 
-											<span class="message-content"> H+ 是个好框架 </span>
+									<c:forEach var="chatMsg" items="${post.chatMsgs }">
+									
+										<div class="chat-message">
+											<img class="message-avatar" src="/SECIMS/res/secims/person/img/a1.jpg" />
+											<div class="message">
+												<a class="message-author" href="#">颜文字君</a> <br />
+												<span class="message-content">${chatMsg.msgContent }</span> <br />
+												<span class="message-date">${chatMsg.sendTimeString }</span> <br />
+											</div>
 										</div>
-									</div>
-
-									<div class="chat-message">
-										<img class="message-avatar" src="/SECIMS/res/secims/person/img/a4.jpg" alt="">
-										<div class="message">
-											<a class="message-author" href="#"> 林依晨Ariel </a> 
-											<span class="message-date"> 2015-02-02 11:12:36 </span> 
-											<span class="message-content"> jQuery表单验证插件 - 让表单验证变得更容易 </span>
-										</div>
-									</div>
-
-									<div class="chat-message">
-										<img class="message-avatar" src="/SECIMS/res/secims/person/img/a2.jpg" alt="">
-										<div class="message">
-											<a class="message-author" href="#"> 谨斯里 </a> 
-											<span class="message-date"> 2015-02-02 11:12:36 </span> 
-											<span class="message-content"> 验证日期格式(类似30/30/2008的格式,不验证日期准确性只验证格式 </span>
-										</div>
-									</div>
+										
+									</c:forEach>
+									
 
 								</div>
 

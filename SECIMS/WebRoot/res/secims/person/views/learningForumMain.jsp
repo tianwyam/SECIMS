@@ -67,7 +67,7 @@
 	                                        </div>
 	                                        <a href="/SECIMS/res/getLearningForumDetail?postsId=${post.postsId }" class="forum-item-title">${post.title }</a>
 	                                        <br />
-	                                        <h3 style="font-family: '华文行楷'">${post.type }</h3>
+	                                        <h3 style="font-family: '华文行楷'"><a href="/SECIMS/res/getLearningForumType?type=${post.type }">${post.type }</a></h3>
 	                                    </div>
 	                                    
 	                                    <div class="col-sm-4 forum-info">
