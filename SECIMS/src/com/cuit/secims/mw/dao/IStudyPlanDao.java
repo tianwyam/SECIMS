@@ -61,4 +61,8 @@ public interface IStudyPlanDao {
 	public int getPlansNumByUserIdAndStatus(Map map);
 	
 	
+	// 批量修改成绩
+	public int updateScores(List<Map<String, Object>> list);
+	
+	
 }

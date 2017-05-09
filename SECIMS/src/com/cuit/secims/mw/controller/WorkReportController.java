@@ -18,7 +18,6 @@ import com.cuit.secims.mw.pojo.WeekReportWork;
 import com.cuit.secims.mw.service.WorkReportSV;
 import com.cuit.secims.mw.util.Docx4jUtil;
 import com.cuit.secims.mw.util.Result;
-import com.cuit.secims.mw.util.CommonUtils;
 import com.google.gson.Gson;
 
 /**
@@ -87,15 +86,12 @@ public class WorkReportController {
 	
 	// 查看 周报
 	@RequestMapping(value="getWeeklyDetailView",method=RequestMethod.GET)
-	public ModelAndView getWeeklyDetailViewPage(WeekReportWork weekly,
+	public ModelAndView getWeeklyDetailViewPage(int weekRepId,
 			HttpServletRequest request) throws Exception{
 		
 		request.setCharacterEncoding("UTF-8");
 		
-		// 处理中文乱码问题
-		weekly.setTitle(CommonUtils.dealStringEncoding(weekly.getTitle()));
-		weekly.setContent(CommonUtils.dealStringEncoding(weekly.getContent()));
-		
+		WeekReportWork weekly = this.service.getWeeklyByWeekRepId(weekRepId);
 		
 		log.info("查看周报情况： "+weekly);
 		
@@ -132,11 +128,11 @@ public class WorkReportController {
 	
 	// 发送周报（其实是直接把状态位改为 F ）
 	@RequestMapping(value="sendWeeklytoF",method=RequestMethod.POST)
-	public @ResponseBody String sendWeeklytoF(WeekReportWork weekly){
+	public @ResponseBody String sendWeeklytoF(@RequestParam int weekRepId){
 		
 		Result result = new Result();
 		
-		int count = this.service.sendWeeklytoF(weekly.getWeekRepId());
+		int count = this.service.sendWeeklytoF(weekRepId);
 		if (count > 0) {
 			result.setSuccess(true);
 		}
