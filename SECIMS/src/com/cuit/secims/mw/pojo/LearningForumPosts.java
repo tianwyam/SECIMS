@@ -1,7 +1,9 @@
 package com.cuit.secims.mw.pojo;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import com.cuit.secims.mw.util.CommonUtils;
 
 /**
  * @Description 学习论坛贴子
@@ -22,6 +24,7 @@ public class LearningForumPosts {
 	private int browseNum ; // 浏览数量
 	private int answerNum ; // 回答数量
 	private String status ; // 状态（F:完成，E：执行中）
+	
 	
 	
 	
@@ -85,9 +88,7 @@ public class LearningForumPosts {
 	//时间以字符串格式输出
 	public String getCreateTimeString(){
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 EEE HH:mm:ss");
-		
-		return sdf.format(createTime);
+		return CommonUtils.getStringfromDate(createTime, "yyyy-MM-dd HH:mm:ss");
 		
 	}
 
@@ -153,6 +154,25 @@ public class LearningForumPosts {
 				+ "&userid=" + userid + "&browseNum=" + browseNum
 				+ "&answerNum=" + answerNum + "&status=" + status;
 	}
+	
+	
+	
+	
+	// 论坛帖子中的聊天记录
+	private List<LearningForumChatMsg> chatMsgs;
+
+
+
+	public List<LearningForumChatMsg> getChatMsgs() {
+		return chatMsgs;
+	}
+
+
+	public void setChatMsgs(List<LearningForumChatMsg> chatMsgs) {
+		this.chatMsgs = chatMsgs;
+	}
+	
+	
 	
 	
 }
