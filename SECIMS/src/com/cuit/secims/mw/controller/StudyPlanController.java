@@ -237,5 +237,22 @@ public class StudyPlanController {
 	
 	
 	
+	// 批量修改成绩/评分
+	@RequestMapping(value="updateScores",method=RequestMethod.POST)
+	public @ResponseBody String updateScores(@RequestParam(value="scores")Double[] scores,
+			@RequestParam(value="planIds")int[] planIds){
+		
+		Result result = new Result();
+		
+		// 批量修改
+		int count = this.service.updateScores(scores, planIds);
+		if (count > 0) {
+			result.setSuccess(true);
+		}
+		
+		
+		return new Gson().toJson(result);
+	}
+	
 
 }
