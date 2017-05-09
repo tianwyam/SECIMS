@@ -30,6 +30,13 @@
         			<div class="ibox">
 
 						<div class="mail-box-header">
+						
+							<div class="pull-right tooltip-demo">
+								<a href="/SECIMS/res/getStudyPlans" class="btn btn-white btn-sm"> 
+									<span class="glyphicon glyphicon-home" aria-hidden="true"></span> 计划主页
+								</a>
+							</div>
+						
 							<h3 style="font-family: '华文行楷';">计划互评</h3>
 						</div>
 
@@ -54,7 +61,7 @@
 									<div id="wizard" class="wizard-big"> 
 									
 										<%-- 各个用户 完成的 计划列表 开始 --%>
-										<c:forEach items="${plans }" var="plan">
+										<c:forEach items="${plans }" var="plan" varStatus="status">
 										
 										<h1>芥空</h1>
 			                            <fieldset style="overflow: auto;">
@@ -107,6 +114,7 @@
 							                                    <dt>计划内容：</dt>
 							                                    <dd>
 							                                    	<span>${plan.planContent }</span>
+							                                    	<span id="planID${status.index }" style="display:none;">${plan.planId }</span>
 							                                    </dd>
 							                                </dl>
 							                                
@@ -120,7 +128,7 @@
 													<div class="row m-t-sm" >
 														<div class="col-sm-12">
 															<a href="javascript:void(0)">
-																<span>执行学习计划的过程</span>
+																<h4>执行计划过程</h4>
 															</a>
 														</div>
 													</div>
@@ -149,7 +157,7 @@
 										                                            <br>
 										                                            <p>${detail.planDetailContent }</p>
 										                                            
-										                                            <!-- 如果已经完结 就 不可以编辑/删除  -->
+										                                            <!-- 如果已经完结 就 不可以编辑/删除  
 										                                            <c:if test="${plan.status != 'F' && detail.status != 'F' }">
 											                                            <div>
 																							<a class="btn btn-sm btn-default" id="delDetail" onclick="delDetail('${detail.planDetailId}','${plan.planId }')">
@@ -159,7 +167,7 @@
 																								<i class="layui-icon">&#xe642;</i>
 																							</a>
 																						</div>
-																					</c:if>
+																					</c:if> -->
 																					
 										                                            <span class="vertical-date">
 										                                            	<br>

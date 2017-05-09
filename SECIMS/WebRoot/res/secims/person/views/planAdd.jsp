@@ -31,6 +31,13 @@
 				<div class="ibox">
 
 					<div class="mail-box-header">
+
+						<div class="pull-right tooltip-demo">
+							<a href="/SECIMS/res/getStudyPlans" class="btn btn-white btn-sm"> 
+								<span class="glyphicon glyphicon-home" aria-hidden="true"></span> 计划主页
+							</a>
+						</div>
+
 						<h2 style="font-family: '华文行楷';">添加计划</h2>
 					</div>
 

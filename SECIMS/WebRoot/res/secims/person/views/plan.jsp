@@ -19,8 +19,13 @@
 
                 <div class="ibox">
                     <div class="ibox-title">
-                        <h3>所有计划</h3>
-                    </div>
+						<h3>所有计划</h3>
+						<div class="pull-right tooltip-demo">
+							<a href="/SECIMS/res/getAddPlanPage" class="btn btn-white btn-sm"> 
+								<i class="layui-icon">&#xe609;</i> 添加计划 
+							</a>
+						</div>
+					</div>
                     <div class="ibox-content">
                     
                     	<!-- 工具栏 -- 刷新/搜索 -->
