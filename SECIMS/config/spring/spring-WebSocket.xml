@@ -22,6 +22,7 @@
 			
 			
 			
+			<!-- ################ 聊天使用的 WebSocket ################ -->
 			
 			<bean id="myHandler" class="com.cuit.secims.mw.ws.MyWebSocketHandler"/>
 			
@@ -43,6 +44,29 @@
 			    <websocket:sockjs />
 			</websocket:handlers>
 			
+			
+			<!-- ################ 全局消息通知使用的 WebSocket ################ -->
+			
+			
+			<bean id="msgHandler" class="com.cuit.secims.mw.ws.MsgWebSocketHandler"/>
+			
+			<bean id="msgInterceptor" class="com.cuit.secims.mw.ws.MsgHandshakeInterceptor"/>
+
+			<websocket:handlers >
+			    <websocket:mapping path="/msgWebSocket" handler="myHandler"/>
+			    <websocket:handshake-interceptors>
+			    	<ref bean="myInterceptor"/>
+			    </websocket:handshake-interceptors>
+			</websocket:handlers>
+			
+			<!--  注册 sockJS -->
+			<websocket:handlers>
+				<websocket:mapping path="/sockjs/msgWebSocket" handler="myHandler"/>
+			    <websocket:handshake-interceptors>
+			    	<ref bean="myInterceptor"/>
+			    </websocket:handshake-interceptors>
+			    <websocket:sockjs />
+			</websocket:handlers>
 			
 		
 </beans>			
