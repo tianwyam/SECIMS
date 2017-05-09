@@ -50,6 +50,11 @@ public class WorkReportSV {
 	}
 	
 	
+	// 根据ID获取周报
+	public WeekReportWork getWeeklyByWeekRepId(int weekRepId){
+		return this.weeklyDao.getWeeklyByWeekRepId(weekRepId);
+	}
+	
 	
 	
 	
