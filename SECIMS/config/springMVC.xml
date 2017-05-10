@@ -16,6 +16,7 @@
      <mvc:default-servlet-handler/>
     
     <mvc:resources location="login.jsp" mapping="login.jsp" />
+    <mvc:resources location="/res/index.jsp" mapping="/res/index.jsp" />
        
     <!-- 添加注解驱动 -->  
     <mvc:annotation-driven />
@@ -27,14 +28,22 @@
     
     <!-- mvc:view-controller可以在不需要Controller处理request的情况，转向到设置的View -->  
     <!-- 像下面这样设置，如果请求为/，则不通过controller，而直接解析为/index.jsp -->  
+    
+    
+    <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+    	<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+    	<property name="viewNames" value="resource*" />
+    	<property name="prefix" value="/" />
+    	<property name="suffix" value=".jsp" />
+    	<property name="order" value="0" />
+    </bean>
   
     
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
     	 
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />  
         <!-- 配置jsp路径前缀 -->  
-       <!--  <property name="prefix" value="secims/person/views/" />   -->
-        <property name="prefix" value="/" />  
+       	<property name="prefix" value="secims/person/views/" />   
         <!-- 配置URl后缀 -->  
         <property name="suffix" value=".jsp" />  
         <property name="order" value="10" />
