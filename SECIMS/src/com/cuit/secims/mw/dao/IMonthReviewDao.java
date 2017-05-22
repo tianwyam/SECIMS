@@ -1,10 +1,12 @@
 package com.cuit.secims.mw.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
 import com.cuit.secims.mw.pojo.MonthReview;
+import com.cuit.secims.mw.pojo.MonthReviewResult;
 
 /**
  * 月评管理
@@ -26,5 +28,19 @@ public interface IMonthReviewDao {
 	// 删除 上传的月评PPT情况
 	public int delMonth(int id);
 	
+	
+	//###################### 企业导师 操作 月评PPT 相关  ##########################
+	
+	// 月评PPT - 企业导师 打分评论
+	public int tutorMonthAddComment(Map map);
+
+	// 月评PPT - 企业导师 修改打分评论
+	public int tutorMonthModifyComment(Map map);
+
+	// 判断 导师 是否已经评论了 月评PPT
+	public int isExistsMonthComment(Map map);
+	
+	// 获取 月评 评论
+	public MonthReviewResult getMonthReviewResult(Map map) ;
 
 }
