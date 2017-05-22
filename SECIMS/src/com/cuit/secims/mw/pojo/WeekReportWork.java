@@ -2,6 +2,8 @@ package com.cuit.secims.mw.pojo;
 
 import java.sql.Date;
 
+import com.cuit.secims.mw.util.CommonUtils;
+
 /**
  * 周报
  */
@@ -91,6 +93,10 @@ public class WeekReportWork {
 
 	public Date getCreateTime() {
 		return createTime;
+	}
+	
+	public String getCreateTimeString() {
+		return CommonUtils.getStringfromDate(createTime, "yyyy年MM月dd日");
 	}
 
 	public void setCreateTime(Date createTime) {
