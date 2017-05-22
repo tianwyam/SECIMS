@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.cuit.secims.mw.dao.IStudyPlanDao;
 import com.cuit.secims.mw.pojo.StudyPlan;
+import com.cuit.secims.mw.pojo.StudyPlanScore;
 
 @Service
 public class StudyPlanSV {
@@ -101,6 +102,38 @@ public class StudyPlanSV {
 	}
 
 	
+	/**
+	 * 获取 学习计划及详情和评分评语
+	 * @param userId 要获取学习计划的用户ID
+	 * @param roleType 获取评分评语的用户类型 0：实习生 1：企业导师 2：实习生管理员/经理
+	 * @return
+	 */
+	public List<StudyPlan> getPlanWithDetailsAndComments(int userId,int roleType) {
+		
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("userId", userId);
+		map.put("roleType", roleType);
+		
+		List<StudyPlan> plans = this.plansDao.getPlanWithDetailsAndComments(map);
+		
+		for (int i = 0; plans != null && i < plans.size(); i++) {
+			
+			// 判断详情是否为空
+			if (plans.get(i) != null && plans.get(i).getStudyPlanDetails() != null 
+					&& plans.get(i).getStudyPlanDetails().get(0).getPlanDetailTitle() == null) {
+				plans.get(i).setStudyPlanDetails(null);
+			}
+			
+			// 判断评分评语是否为空
+			if (plans.get(i) != null && plans.get(i).getComments() != null 
+					&& plans.get(i).getComments().get(0).getScoreId() == 0) {
+				plans.get(i).setComments(null);
+			}
+		}
+		
+		return plans;
+	}
+	
 	
 	// 修改 学习计划 状态
 	public int revisePlanStatus(int planId, String status){
@@ -159,6 +192,111 @@ public class StudyPlanSV {
 		
 		return this.plansDao.updateScores(list);
 	}
+	
+	
+	/**
+	 * 修改成绩/表示已经评分了
+	 * @param planId 学习计划ID
+	 * @param score 评分
+	 * @return
+	 */
+	public int updateScore(int planId,double score){
+		
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("planId", planId);
+		map.put("score", score);
+		
+		return this.plansDao.updateScore(map);
+	}
+	
+	
+	
+	/**
+	 * 批量修改成绩/打分
+	 * @param scores 分数数组
+	 * @param planIds 计划ID数组
+	 * @param userId 用户ID
+	 * @param roleType 角色类型（0：实习生，1：企业导师，2：企业经理）
+	 * @return
+	 */
+	public int insertScores(Double[] scores, int[] planIds, int userId, int roleType){
+		
+		ArrayList<StudyPlanScore> list = new ArrayList<>();
+		int len = planIds.length;
+		
+		for (int i = 0; i < len; i++) {
+			StudyPlanScore studyPlanScore = new StudyPlanScore(planIds[i], userId, roleType, scores[i]);
+			list.add(studyPlanScore);
+		}
+		
+		return this.plansDao.insertScores(list);
+	}
+	
+	
+	
+	
+	
+	
+	//###################### 企业导师 操作 学习计划相关  ##########################
+	
+	/**
+	 * 学习计划 - 企业导师 打分评论
+	 * 其中包含了先判断是否已打分，如果没有，则打分；有，则修改打分
+	 * @param userId 用户ID
+	 * @param planId 学习计划ID
+	 * @param score 分数
+	 * @param roleType 角色类型（0：实习生  1：企业导师  2：实习生管理员/经理）
+	 * @param comment 评语
+	 * @return
+	 */
+	public int tutorComment(int userId,int planId,double score,int roleType,String comment){
+		
+		int count = 0;
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", userId);
+		map.put("planId", planId);
+		map.put("score", score);
+		map.put("roleType", roleType);
+		map.put("comment", comment);
+		
+		int isExists = this.plansDao.isExistsComment(map);
+		// 存在，则修改；不存在，则插入
+		if (isExists > 0) {
+			// 修改 打分
+			count = this.plansDao.tutorModifyComment(map);
+		}else {
+			// 打分
+			count = this.plansDao.tutorAddComment(map);
+		}
+		
+		// 修改计划中的评分/表示已评过了
+		updateScore(planId, score);
+		
+		return count;
+	}
+	
+	
+	
+	/**
+	 * 获取评论打分(包括企业导师和实习生互评的打分及评语)
+	 * @param planId 学习计划ID
+	 * @param userId 用户ID
+	 * @param roleType 角色类型（0：实习生/1：企业导师/2：实习生管理员-经理）
+	 * @return 
+	 */
+	public List<StudyPlanScore> getStudyPlanScore(Integer planId,Integer userId, Integer roleType){
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", userId);
+		map.put("planId", planId);
+		map.put("roleType", roleType);
+		
+		return this.plansDao.getStudyPlanScore(map);
+	}
+	
+	
+	
 	
 	
 	
