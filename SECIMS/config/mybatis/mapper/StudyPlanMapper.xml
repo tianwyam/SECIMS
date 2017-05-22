@@ -37,6 +37,23 @@
 		<result property="score" column="score" />
 
 	</resultMap>
+	
+	
+	<!-- 最基本的 学习计划成绩 -->
+	<resultMap type="StudyPlanScore" id="PlanScoreBasic">
+
+		<id property="scoreId" column="scoreId" />
+		<result property="planId" column="planId" />
+		<result property="userid" column="c_userid" />
+		<result property="roleType" column="roleType" />
+		<result property="score" column="c_score" />
+		<result property="comment" column="comment" />
+
+	</resultMap>
+	
+	
+	
+	
 
 	<!-- 带详细计划的学习计划 -->
 	<resultMap type="StudyPlan" id="planWithDetails">
@@ -78,6 +95,37 @@
 			resultMap="com.cuit.secims.mw.dao.IStudyPlanDetailDao.planDetailToHeavy" />
 
 	</resultMap>
+	
+	
+	
+	<!-- 带详细计划的学习计划/评分-->
+	<resultMap type="StudyPlan" id="planWithDetailsAndComments">
+
+		<id property="planId" column="planId" />
+		<result property="planTitle" column="planTitle" />
+		<result property="planType" column="planType" />
+		<result property="planContent" column="planContent" />
+		<result property="createTime" column="s_createTime" />
+		<result property="finishTime" column="s_finishTime" />
+		<result property="userid" column="userid" />
+		<result property="status" column="s_status" />
+		<result property="progress" column="progress" />
+		<result property="score" column="score" />
+
+		<!-- collection 一对多/学习计划详情 -->
+		<collection property="studyPlanDetails"
+			resultMap="com.cuit.secims.mw.dao.IStudyPlanDetailDao.planDetailToHeavy" />
+			
+		<!-- collection 一对多/评分 -->
+		<collection property="comments"
+			resultMap="com.cuit.secims.mw.dao.IStudyPlanDao.planScoreBasic" />
+			
+	</resultMap>
+	
+	
+	
+	
+	
 
 
 	<!-- ====== 具体的一些操作 ======= -->
@@ -85,7 +133,9 @@
 	<!-- 获取 全部 学习计划 -->
 	<select id="getStudyPlans" resultMap="planBasic" parameterType="int">
 		<![CDATA[
-			SELECT * FROM SECIMS.StudyPlan s WHERE s.userid = #{userid} ORDER BY planId DESC
+			SELECT * FROM SECIMS.StudyPlan s 
+			WHERE s.userid = #{userid} AND s.status = 'F'
+			ORDER BY planId DESC
 		]]>
 	</select>
 
@@ -173,7 +223,7 @@
 	</select>
 	
 	
-	<!--  -->
+	<!-- 获取计划及详情和用户信息  -->
 	<select id="getPlansWithDetailsAndUser" parameterType="int" 
 		resultMap="planWithDetailsAndUser">
 		<![CDATA[
@@ -196,11 +246,42 @@
   					u.* 
 			FROM secims.`studyplan` s 
 				LEFT JOIN secims.`studyplandetail` d ON s.`planId` = d.`planId` 
-				LEFT JOIN secims.`user` u ON s.`userid` = u.`userid` 
-			WHERE s.`userid` != #{userid} AND s.`status` = 'F';
+				LEFT JOIN secims.`t_user` u ON s.`userid` = u.`id` 
+			WHERE s.`userid` != #{userid} AND s.`status` = 'F' AND s.planId NOT IN (
+																		SELECT c.planId FROM SECIMS.StudyPlanScore c
+																		WHERE c.userId = #{userid}
+																	);
 		]]>
 	</select>
 
+
+	<!-- 获取计划及详情和评语评分  -->
+	<select id="getPlanWithDetailsAndComments" parameterType="map" 
+		resultMap="planWithDetailsAndComments">
+		<![CDATA[
+			SELECT s.`planId`,
+  					s.`planTitle`,
+  					s.`planType`,
+  					s.`planContent`,
+  					s.`userid`,
+  					s.`progress`,
+  					s.`createTime` AS s_createTime,
+  					s.`finishTime` AS s_finishTime,
+  					s.`status` AS s_status,
+					d.`createTime` AS d_createTime,
+  					d.`finishTime` AS d_finishTime,
+  					d.`status` AS d_status ,
+  					d.`planId`,
+  					d.`planDetailId`,
+  					d.`planDetailTitle`,
+  					d.`planDetailContent`,
+  					u.* 
+			FROM secims.`StudyPlan` s 
+				LEFT JOIN secims.`StudyPlanDetail` d ON s.`planId` = d.`planId` 
+				LEFT JOIN secims.`StudyPlanScore` cON c.planId = s.planId AND c.`roleType` = #{roleType}
+			WHERE s.`userid` = #{userid} ;
+		]]>
+	</select>
 
 	
 	<!-- 修改 计划 状态 -->
@@ -257,6 +338,83 @@
 			#{i.planId}
 		</foreach>
 	</update>
+	
+	
+	<!-- 修改成绩评分/表示已评 -->
+	<update id="updateScore" parameterType="map">
+		UPDATE SECIMS.`StudyPlan`
+		SET score = #{score}
+		WHERE planId = #{planId}
+	</update>
+	
+	
+	<!-- 批量增加评分/录入成绩 -->
+	<insert id="insertScores" parameterType="list" >
+		
+		INSERT INTO SECIMS.StudyPlanScore (planId,userId,roleType,score)
+		VALUES
+		<foreach collection="list" item="i" separator=",">
+			(
+				#{i.planId},#{i.userId},#{i.roleType},#{i.score}
+			)
+		</foreach>
+	</insert>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- ################### 企业导师 操作 学习计划相关 #################### -->
+	
+	<!-- 企业导师 打分评论 -->
+	<insert id="tutorAddComment" parameterType="map">
+		INSERT INTO SECIMS.StudyPlanScore (planId,userId,roleType,score,comment)
+		VALUES(#{planId},#{userId},#{roleType},#{score},#{comment})
+	</insert>
+	
+	<!-- 企业导师 修改打分评论  -->
+	<update id="tutorModifyComment" parameterType="map">
+		UPDATE SECIMS.StudyPlanScore 
+		<set>
+			<if test="score != null">score = #{score} ,</if>
+			<if test="comment != null">comment = #{comment}</if>
+		</set>
+		WHERE planId = #{planId}  AND userId = #{userId}
+	</update>
+	
+	
+	<!-- 判断 导师 是否 已经评论了 -->
+	<select id="isExistsComment" parameterType="map" resultType="int">
+		SELECT COUNT(0) FROM SECIMS.StudyPlanScore C
+		WHERE C.planId = #{planId} AND C.userId = #{userId}
+	</select>
+	
+	<!-- 获取 企业导师/实习生互评/评论打分 -->
+	<select id="getStudyPlanScore" parameterType="map" resultType="StudyPlanScore">
+		SELECT * FROM SECIMS.StudyPlanScore C
+		<where>
+			<if test="planId != null">C.planId = #{planId}</if>
+			<if test="userId != null">AND C.userId = #{userId}</if>
+			<if test="roleType != null">AND C.roleType = #{roleType}</if>
+		</where>
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
