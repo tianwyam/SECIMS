@@ -20,10 +20,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cuit.secims.mw.pojo.MonthReview;
+import com.cuit.secims.mw.pojo.MonthReviewResult;
 import com.cuit.secims.mw.service.MonthReviewSV;
 import com.cuit.secims.mw.util.CommonConst;
 import com.cuit.secims.mw.util.PPT2ImgUtil;
 import com.cuit.secims.mw.util.Result;
+import com.cuit.secims.mw.util.UserManager;
 import com.google.gson.Gson;
 
 /**
@@ -46,7 +48,10 @@ public class MonthReviewController {
 	public ModelAndView getMonthPage(HttpServletRequest request,
 			HttpServletResponse response){
 		
-		List<MonthReview> months = this.service.getMonthByUserId(1); // 用户ID 以后修改
+		// 设置 用户ID 
+		int userID = UserManager.getUserId();
+		
+		List<MonthReview> months = this.service.getMonthByUserId(userID); 
 		
 		ModelAndView mad = new ModelAndView("month");
 		mad.addObject("months", months); 
@@ -70,7 +75,7 @@ public class MonthReviewController {
 		
 		String fileName = null;
 		// 用户ID 后面改
-		int userid = 1;
+		int userid = UserManager.getUserId();
 		
 		
 		MonthReview month = new MonthReview();
@@ -147,7 +152,7 @@ public class MonthReviewController {
 		
 		Result result = new Result();
 		
-		int userid = 1;
+		int userid = UserManager.getUserId();
 		
 		// 先删除数据库中的表数据
 		int count = this.service.delMonth(reviewId);
@@ -207,13 +212,24 @@ public class MonthReviewController {
 	
 	// 查看PPT
 	@RequestMapping(value="toViewPPT",method=RequestMethod.GET)
-	public ModelAndView PPTView(@RequestParam int reviewId, @RequestParam String monthFileURL,
+	public ModelAndView PPTView(@RequestParam int reviewId, 
+			@RequestParam String monthFileURL,
+			@RequestParam(value="traineeId",required=false) Integer traineeId,
 			HttpServletRequest request) throws Exception{
 		
 		request.setCharacterEncoding("UTF-8");
 		
 		ArrayList<String> imgURList = new ArrayList<>();
-		int userid = 1;
+		
+		int userid = 0;
+		
+		// 企业导师查看时
+		if (traineeId != null) {
+			userid = traineeId;
+		}else {
+			// 实习生自己查看
+			userid = UserManager.getUserId();
+		}
 		
 		//获取项目根目录
 		String path = request.getSession()
@@ -232,8 +248,11 @@ public class MonthReviewController {
 		String imgFilePath = path+CommonConst.DIR_SEPARATOR1
 					+monthfileurl+CommonConst.DIR_SEPARATOR1+reviewId;
 		
+		// PPT 转换 成图片
 		boolean isSuccess = PPT2ImgUtil.doPPT2Img(PPTFilePath, imgFilePath,imgURList);
 		
+		// 获取评语评论
+		MonthReviewResult monthResult = this.service.getMonthReviewResult(null, reviewId, 1);
 		
 		if (isSuccess) {
 			log.info("成功！++++++++++++++");
@@ -255,6 +274,8 @@ public class MonthReviewController {
 		
 		
 		mad.addObject("imgHead", imgHead+reviewId);
+		mad.addObject("reviewId", reviewId);
+		mad.addObject("comments", monthResult);
 		
 		return mad;
 	}
@@ -272,6 +293,11 @@ public class MonthReviewController {
 	}
 	
 	
+	// 获取月评信息
+	@RequestMapping(value="getMonthResult",method=RequestMethod.POST)
+	public void getMonthResult(){
+		
+	}
 	
 	
 
