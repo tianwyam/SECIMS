@@ -18,7 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.cuit.secims.mw.pojo.StudyPlan;
 import com.cuit.secims.mw.service.StudyPlanSV;
+import com.cuit.secims.mw.util.CommonUtils;
 import com.cuit.secims.mw.util.Result;
+import com.cuit.secims.mw.util.UserManager;
 import com.google.gson.Gson;
 
 @Controller
@@ -37,7 +39,10 @@ public class StudyPlanController {
 	public ModelAndView getStudyPlans(HttpServletRequest request,
 			HttpServletResponse response) {
 
-		List<StudyPlan> plans = this.service.getStudyPlans(1); // 先定义 userid = 1
+		// 先定义 userid = 1
+		int userID = UserManager.getUserId();
+		
+		List<StudyPlan> plans = this.service.getStudyPlans(userID); 
 		
 		
 		Gson gson = new Gson();
@@ -69,12 +74,15 @@ public class StudyPlanController {
 		Result result = new Result();
 		String viewName = "";
 
-		plan.setUserid(1); // 此处以后有用户了再做修改
+		// 设置userID
+		int userId = UserManager.getUserId();
+		
+		plan.setUserid(userId); 
 		
 		log.info("addPlan : "+plan);
 		
 		// 获取正在执行的 计划 总数
-		int plansNum = this.service.getPlansNumByUserIdAndStatus(1,"E");
+		int plansNum = this.service.getPlansNumByUserIdAndStatus(userId,"E");
 		
 		log.info("学习计划的总数有： "+plansNum);
 		
@@ -170,7 +178,10 @@ public class StudyPlanController {
 	@RequestMapping(value="getStudyPlanDetails",method=RequestMethod.GET)
 	public ModelAndView getStudyPlanDetails(){
 		
-		List<StudyPlan> planWithDetails = this.service.getPlanWithDetails(1); // 此处以后有用户ID时替换
+		// 获取当前用户ID
+		int userId = UserManager.getUserId();
+		
+		List<StudyPlan> planWithDetails = this.service.getPlanWithDetails(userId); 
 		
 		ModelAndView mad = new ModelAndView("studyPlanDetail");
 		mad.addObject("planDetails", planWithDetails);
@@ -226,8 +237,25 @@ public class StudyPlanController {
 	@RequestMapping(value="getPlanEvaluation",method=RequestMethod.GET)
 	public ModelAndView getPlanEvaluationPage(){
 		
-		// 获取不是本人的计划 来 评估
-		List<StudyPlan> plans = this.service.getPlansWithDetailsAndUser(0);
+		// 获取当前时间是星期几
+		int weekIndex = CommonUtils.getWeek4System();
+		// 判断是否是早上 还是下午
+		boolean isAM = CommonUtils.getIsAM4System();
+		// 设置用户ID
+		int userId = UserManager.getUserId();
+		
+//		CommonUtils.getUser();
+		
+		List<StudyPlan> plans = null;
+		
+		log.info("weekIndex : "+weekIndex);
+		
+		// 星期一下午
+		if (!isAM && weekIndex == 1) {
+			// 获取不是本人的计划 来 评估 并且判断了 是否已评了的
+			plans = this.service.getPlansWithDetailsAndUser(userId);
+		}
+		
 		
 		ModelAndView mad = new ModelAndView("planEvaluation");
 		mad.addObject("plans", plans);
@@ -243,9 +271,11 @@ public class StudyPlanController {
 			@RequestParam(value="planIds")int[] planIds){
 		
 		Result result = new Result();
+		int userId = UserManager.getUserId();
 		
 		// 批量修改
-		int count = this.service.updateScores(scores, planIds);
+//		int count = this.service.updateScores(scores, planIds);
+		int count = this.service.insertScores(scores, planIds, userId, 0);
 		if (count > 0) {
 			result.setSuccess(true);
 		}
@@ -253,6 +283,12 @@ public class StudyPlanController {
 		
 		return new Gson().toJson(result);
 	}
+	
+	
+	
+	
+	
+	
 	
 
 }
