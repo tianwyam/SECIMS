@@ -79,7 +79,7 @@
 		                        </div>
 		                        
 		                        <div class="col-md-2">
-	                                <button class="btn btn-white btn-sm" onclick="toMonthReview('${month.reviewId}','${month.monthFileURL}')">
+	                                <button class="btn btn-white btn-sm" onclick="toMonthReview('${month.reviewId}','${month.monthFileURL}','${month.userid}')">
 	                                	<span class="glyphicon glyphicon-folder-open"></span> 查看
 	                                </button>
 	                                <button class="btn btn-white btn-sm" onclick="delMonthReview('${month.reviewId}','${month.monthFileURL}')">

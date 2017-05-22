@@ -19,15 +19,15 @@
 	        <div class="row">
 	        	
 	        
-	            <div class="col-sm-12">
+	            <div class="col-sm-8 col-sm-offset-2">
 
 					<div class="ibox float-e-margins">
-						<div class="ibox-title">
-							<h4>月评</h4>
+						<div class="mail-box-header">
+							<h2>月评</h2>
 						</div>
 						<div class="ibox-content">
 						
-							<div id="my" style="max-width: 70em;height: 30em;margin: 0 auto;"></div>
+							<div id="my" style="max-width: 50em;height: 30em;"></div>
 							
 							<div style="text-align: center;">
 								<span style="color: red;">注：点击查看详情</span>
@@ -48,7 +48,7 @@
 		<script type="text/javascript" src="/SECIMS/res/echarts/shine.js"></script>
 		<script type="text/javascript" src="/SECIMS/res/SweetAlert/sweetalert.min.js"></script>
 		
-		
+		<!-- 自定义JS -->
 		<script type="text/javascript" src="/SECIMS/res/secims/person/js/monthAssess.js"></script>
 
 	</body>
