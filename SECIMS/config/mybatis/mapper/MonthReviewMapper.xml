@@ -60,6 +60,43 @@
 	
 	
 	
+	<!-- #################### 企业导师管理 月评 相关 操作  ####################### -->
+	
+	<!-- 企业导师 打分评论 -->
+	<insert id="tutorMonthAddComment" parameterType="map">
+		INSERT INTO SECIMS.MonthReviewResult (reviewId,userId,roleType,result,comment)
+		VALUES(#{reviewId},#{userId},#{roleType},#{result},#{comment})
+	</insert>
+	
+	<!-- 企业导师 修改打分评论  -->
+	<update id="tutorMonthModifyComment" parameterType="map">
+		UPDATE SECIMS.MonthReviewResult 
+		<set>
+			<if test="score != null">result = #{result} ,</if>
+			<if test="comment != null">comment = #{comment}</if>
+		</set>
+		WHERE reviewId = #{reviewId}  AND userId = #{userId}
+	</update>
+	
+	
+	<!-- 判断 导师 是否 已经评论了 -->
+	<select id="isExistsMonthComment" parameterType="map" resultType="int">
+		SELECT COUNT(0) FROM SECIMS.MonthReviewResult C
+		WHERE C.reviewId = #{reviewId} AND C.userId = #{userId}
+	</select>
+	
+	
+	<!-- 获取 月评 评论 -->
+	<select id="getMonthReviewResult" parameterType="map" resultType="MonthReviewResult">
+		SELECT * FROM SECIMS.MonthReviewResult c
+		<where>
+			<if test="reviewId != null">reviewId=#{reviewId}</if>
+			<if test="userId != null">AND userId=#{userId}</if>
+			<if test="roleType != null">AND roleType=#{roleType}</if>
+		</where>
+	</select>
+	
+	
 	
 	
 </mapper>
