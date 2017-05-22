@@ -129,6 +129,16 @@ public class StudyPlan implements Serializable{
 	}
 	
 	
+	public List<StudyPlanScore> getComments() {
+		return comments;
+	}
+
+
+	public void setComments(List<StudyPlanScore> comments) {
+		this.comments = comments;
+	}
+
+
 	public double getProgress() {
 		return progress;
 	}
@@ -159,12 +169,20 @@ public class StudyPlan implements Serializable{
 				+ "&score=" + score;
 	}
 
-
-
-
-
-
 	// 学习计划下详细执行的计划
 	public List<StudyPlanDetail> studyPlanDetails ;
+	
+	
+	// 学习计划下的评分
+	public List<StudyPlanScore> comments ;
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
