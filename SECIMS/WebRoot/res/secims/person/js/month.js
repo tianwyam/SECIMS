@@ -168,7 +168,7 @@ function flushMonthList(id){
 
 // 查看 PPT
 
-function toMonthReview(id,filePath){
+function toMonthReview(id,filePath,userId){
 	
 //	filePath = filePath.replace("\\","-");
 	
@@ -178,7 +178,7 @@ function toMonthReview(id,filePath){
 	console.log(filePath);
 	
 	var url = "/SECIMS/res/toViewPPT" ;
-	var param = "?reviewId="+id+"&monthFileURL="+filePath;
+	var param = "?reviewId="+id+"&monthFileURL="+filePath+"&traineeId="+userId;
 	
 	window.location.href = url+param ;
 
