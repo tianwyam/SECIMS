@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.cuit.secims.mw.pojo.StudyPlan;
+import com.cuit.secims.mw.pojo.StudyPlanScore;
 
 
 @Repository
@@ -42,6 +43,10 @@ public interface IStudyPlanDao {
 	 */
 	public List<StudyPlan> getPlansWithDetailsAndUser(int userid) ;
 	
+	
+	
+	public List<StudyPlan> getPlanWithDetailsAndComments(Map map) ;
+	
 	// 根据 planId 获取 学习计划 及 详细
 	public StudyPlan getPlanByPlanIdWithDetails(int planId);
 	
@@ -63,6 +68,38 @@ public interface IStudyPlanDao {
 	
 	// 批量修改成绩
 	public int updateScores(List<Map<String, Object>> list);
+	
+	// 修改成绩
+	public int updateScore(Map map);
+	
+	// 批量修改成绩/打分
+	public int insertScores(List list);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//###################### 企业导师 操作 学习计划相关  ##########################
+	
+	
+	// 学习计划 - 企业导师 打分评论
+	public int tutorAddComment(Map map);
+	
+	// 学习计划 - 企业导师 修改打分评论
+	public int tutorModifyComment(Map map);
+	
+	// 判断 导师 是否已经评论了
+	public int isExistsComment(Map map);
+	
+	// 获取评论打分
+	public List<StudyPlanScore> getStudyPlanScore(Map map);
+	
+	
 	
 	
 }
