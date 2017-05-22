@@ -36,7 +36,8 @@
                                 <span class="clear">
                                     <span class="block m-t-xs" style="font-size:20px;">
                                         <i class="fa fa-area-chart"></i>
-                                        <strong class="font-bold">SECIMS</strong>
+                                        <img alt="image" width="40em" class="img-circle" src="/SECIMS/res/secims/person/img/a4.jpg">
+                                        <strong class="font-bold" >SECIMS</strong>
                                     </span>
                                 </span>
                             </a>
@@ -101,7 +102,6 @@
                         <a href="#">
                         	<i class="layui-icon">&#xe60e;</i>
                         	<span class="nav-label">工作管理 </span>
-                        	<span class="label label-warning pull-right">16</span>
                         </a>
                         <ul class="nav nav-second-level">
                             <li><a class="J_menuItem" href="/SECIMS/res/getWeekly">编辑周报</a>
