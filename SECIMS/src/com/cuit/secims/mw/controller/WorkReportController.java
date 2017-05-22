@@ -18,6 +18,7 @@ import com.cuit.secims.mw.pojo.WeekReportWork;
 import com.cuit.secims.mw.service.WorkReportSV;
 import com.cuit.secims.mw.util.Docx4jUtil;
 import com.cuit.secims.mw.util.Result;
+import com.cuit.secims.mw.util.UserManager;
 import com.google.gson.Gson;
 
 /**
@@ -44,8 +45,11 @@ public class WorkReportController {
 	@RequestMapping(value="getWeeklyReport",method=RequestMethod.GET)
 	public ModelAndView getWeeklyReportPage() throws Exception{
 		
+		// 设置用户ID
+		int userId = UserManager.getUserId();
+		
 //		List<WeekReportWork> weeklyAll = this.service.getWeeklyAll(1);
-		List<WeekReportWork> weeklys = this.service.getWeeklyByCondition(1, "F");
+		List<WeekReportWork> weeklys = this.service.getWeeklyByCondition(userId, "F");
 		
 		ModelAndView mad = new ModelAndView("weeklyReport");
 		mad.addObject("weeklys", weeklys);
@@ -59,7 +63,10 @@ public class WorkReportController {
 	@RequestMapping(value="getWeeklyDraftBox",method=RequestMethod.GET)
 	public ModelAndView getWeeklyDraftBoxPage(){
 		
-		List<WeekReportWork> weeklys = this.service.getWeeklyByCondition(1, "E");
+		// 设置用户ID
+		int userId = UserManager.getUserId();
+		
+		List<WeekReportWork> weeklys = this.service.getWeeklyByCondition(userId, "E");
 		
 		ModelAndView mav = new ModelAndView("weeklyDraftBox");
 		mav.addObject("weeklys", weeklys);
@@ -72,8 +79,11 @@ public class WorkReportController {
 	// 垃圾箱（已删除的周报）
 	@RequestMapping(value="getWeeklyDustbin",method=RequestMethod.GET)
 	public ModelAndView getWeeklyDustbinPage() {
+		
+		// 设置用户ID
+		int userId = UserManager.getUserId();
 
-		List<WeekReportWork> weeklys = this.service.getWeeklyByCondition(1, "D");
+		List<WeekReportWork> weeklys = this.service.getWeeklyByCondition(userId, "D");
 
 		ModelAndView mav = new ModelAndView("weeklyDustbin");
 		mav.addObject("weeklys", weeklys);
@@ -111,7 +121,7 @@ public class WorkReportController {
 		
 		Result result = new Result();
 		
-		weekly.setUserid(1); //userid 后面来写
+		weekly.setUserid(UserManager.getUserId()); 
 		
 		log.info("发送周报   weekly : " + weekly);
 		
@@ -148,7 +158,7 @@ public class WorkReportController {
 		
 		Result result = new Result();
 		
-		weekly.setUserid(1); // here will be changed
+		weekly.setUserid(UserManager.getUserId()); 
 		
 		log.info("存为 草稿箱  weekly: "+weekly);
 		
