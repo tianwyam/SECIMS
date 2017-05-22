@@ -9,7 +9,7 @@
 
 	<!-- ========= 结果集 =========== -->
 
-	<!-- 最基本的 学习计划  -->
+	<!-- 最基本的月评信息 -->
 	<resultMap type="MonthReview" id="monthBasic">
 	
 		<id property="reviewId" column="reviewId" />
@@ -20,6 +20,30 @@
 		
 	</resultMap>
 	
+	<!-- 最基本的 月评信息 -->
+	<resultMap type="MonthReview" id="monthWithResult">
+	
+		<id property="reviewId" column="reviewId" />
+		<result property="userid" column="userid" />
+		<result property="monthTitle" column="monthTitle" />
+		<result property="monthFileURL" column="monthFileURL" />
+		<result property="createTime" column="createTime" />
+		
+		<!-- 月评信息 一对一 评定结果 -->
+		<association property="monthResult" resultMap="monthResult" />
+		
+	</resultMap>
+	
+	
+	<!-- 月评结果集 -->
+	<resultMap type="MonthReviewResult" id="monthResult">
+		<id property="resultId" column="resultId" />
+		<result property="reviewId" column="reviewId" />
+		<result property="userId" column="userId" />
+		<result property="roleType" column="roleType" />
+		<result property="result" column="result" />
+		<result property="comment" column="comment" />
+	</resultMap>
 	
 
 
@@ -30,6 +54,16 @@
 	
 		<![CDATA[
 			SELECT * FROM SECIMS.MonthReview r WHERE r.userid = #{userid} ORDER BY reviewId DESC
+		]]>
+	
+	</select>
+	
+	
+	<!-- 查询 月评PPT 情况 -->
+	<select id="getMonthByReviewId" parameterType="int" resultType="MonthReview">
+	
+		<![CDATA[
+			SELECT * FROM SECIMS.MonthReview r WHERE r.reviewId = #{reviewId} 
 		]]>
 	
 	</select>
@@ -54,6 +88,18 @@
 		]]>
 		
 	</delete>
+	
+	
+	<!--  获取级联数据  月评信息+月评评论成绩表 -->
+	<select id="getMonthResult" resultMap="monthWithResult" parameterType="map">
+	
+		<![CDATA[
+			SELECT * 
+			FROM SECIMS.`MonthReview` m , SECIMS.`MonthReviewResult` r 
+			WHERE m.`userid` = #{userId} AND r.`reviewId` = m.`reviewId` AND r.`roleType` = #{roleType} 
+			ORDER BY m.`createTime` 
+		]]>
+	</select>
 	
 	
 	
