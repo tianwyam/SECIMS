@@ -1,4 +1,7 @@
 
+--选择数据库
+use secims;
+
 --用户表
 CREATE TABLE `SECIMS`.`USER`(  
   `userid` INT(10) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
@@ -97,6 +100,16 @@ SELECT * FROM SECIMS.`StudyPlanDetail` ;
 
 
 
+CREATE TABLE `studyplanscore` (
+  `scoreId` int(10) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `planId` int(10) DEFAULT NULL COMMENT '学习计划ID',
+  `userId` int(10) DEFAULT NULL COMMENT '用户ID',
+  `roleType` int(2) DEFAULT NULL COMMENT '角色类型（实习生互评/导师评价/实习生管理员）',
+  `score` double(5,2) DEFAULT NULL COMMENT '评定成绩',
+  `comment` longtext COMMENT '评语',
+  PRIMARY KEY (`scoreId`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8
+
 
 
 
@@ -113,6 +126,18 @@ CREATE TABLE `MonthReview` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 
+
+
+
+CREATE TABLE `monthreviewresult` (
+  `resultId` int(10) NOT NULL AUTO_INCREMENT COMMENT '月评评论表ID',
+  `reviewId` int(10) DEFAULT NULL COMMENT '月评ID',
+  `userId` int(10) DEFAULT NULL COMMENT '评论人Id',
+  `roleType` int(2) DEFAULT NULL COMMENT '评论人类型/（如：企业导师/企业实习生管理员）',
+  `result` double(5,2) DEFAULT NULL COMMENT '分数',
+  `comment` text COMMENT '评语',
+  PRIMARY KEY (`resultId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 
 
