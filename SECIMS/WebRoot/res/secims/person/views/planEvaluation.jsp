@@ -12,7 +12,7 @@
 		<%@include file="../../common/commonJS.jsp" %>
 		
 		<link rel="stylesheet" href="/SECIMS/res/steps/jquery.steps.css">
-		<link rel="stylesheet" href="/SECIMS/res/bootstrap-star-rating/css/star-rating.min.css"  media="all" type="text/css">
+		<link rel="stylesheet" href="/SECIMS/res/bootstrap-star-rating/css/star-rating.min.css" >
 		
 		<script type="text/javascript" src="/SECIMS/res/steps/jquery.steps.min.js"></script>
 		<script type="text/javascript" src="/SECIMS/res/bootstrap-star-rating/js/star-rating.js"></script>
@@ -39,6 +39,18 @@
 						
 							<h3 style="font-family: '华文行楷';">计划互评</h3>
 						</div>
+						
+					<c:choose>
+						<c:when test="${plans == null}">
+							<%-- 还没有到 星期一下午 不能评论 --%>
+							<div class="ibox-content">
+								<h3>还未到评分时间，请耐心等待。。。。。</h3><br />
+								<p style="color: red;font-size: .8em;">注：只有在星期一下午才能评论打分</p>
+							</div>
+						</c:when>
+						
+						<%-- 时间正确，可以评分 --%>
+						<c:otherwise>
 
 						<%-- 互评 打分 --%>
 						<div class="ibox-content">
@@ -48,7 +60,6 @@
 									data-size="lg" type="number"
 									data-min="0" data-max="10" value=""
 									data-stars="10" data-step="0.1" />
-								<button id="clearStars" type="reset" class="btn btn-default" style="display:none;" >Reset</button>
 							</form>
 						</div>
 						
@@ -199,6 +210,10 @@
 								</div>
 							</div>
 						</div>
+						
+						</c:otherwise>
+					</c:choose>
+						
         			</div>
         			
         		</div>

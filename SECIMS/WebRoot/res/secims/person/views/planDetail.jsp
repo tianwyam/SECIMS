@@ -24,7 +24,9 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="m-b-md">
-                                    <a href="/SECIMS/res/getStudyPlans"  class="btn btn-white btn-xs pull-right">返回计划</a>
+                                    <a href="/SECIMS/res/getStudyPlans" class="btn btn-white btn-sm pull-right"> 
+										<span class="glyphicon glyphicon-home" aria-hidden="true"></span> 计划主页
+									</a>
                                     <h2>学习计划</h2>
                                 </div>
                                 <dl class="dl-horizontal">
@@ -219,7 +221,7 @@
 												
 												<form  id="detailAddForm" action="/SECIMS/res/addDetail" method="post">
 													
-													<input type="text" name="planId" id="planId" value="${plan.planId }" hidden="true" />
+													<input type="text" name="planId" id="planId" value="${plan.planId }" hidden="true" autofocus="autofocus" />
 													
 													<div class="form-group form-group-lg has-feedback">
 														<label class="control-label" for="planTitle">计划详情标题</label>

@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=utf-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 
 
 <!DOCTYPE HTML>
@@ -25,7 +26,7 @@
 	                <div class="mail-box-header">
 	                
 	                    <div class="pull-right tooltip-demo">
-	                        <button onclick="self.location=document.referrer;" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="返回">
+	                        <button onclick="self.location=document.referrer;" class="btn btn-white" title="返回">
 	                        	<span class="glyphicon glyphicon-share-alt" ></span> 返回
 	                        </button>
 	                    </div>
@@ -54,9 +55,10 @@
 	                        <p class="text-right"> 发件人： ${weekly.sender }</p>
 	                    </div>
 	                    
-
+						<!-- 导师 没有权限 -->
+						<shiro:lacksRole name="tutor">
 	                    <div class="mail-body text-right tooltip-demo">
-	                    
+	                    	
 	                    	<!-- 发送按钮就只有 是删除的/草稿箱里的，如果是已经发送了的就不允许发送了 -->
 	                    	<c:if test="${weekly.status != 'F' }">
 		                        <a class="btn btn-sm btn-primary" href="#" onclick="sendWeekly('${weekly.weekRepId}')">
@@ -68,6 +70,8 @@
 	                        	<i class="layui-icon">&#xe640;</i>  删除
 	                        </a>
 	                    </div>
+	                    </shiro:lacksRole>
+	                    
 	                    <div class="clearfix"></div>
 	                    
 	                </div>

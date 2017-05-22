@@ -8,6 +8,12 @@
         
         <%-- 公共JS 和 css --%>
 		<%@include file="../../common/commonJS.jsp" %>
+		<style type="text/css">
+			.planListTable tbody tr th{
+				text-align: center;
+				font-size: 1.2em;
+			}
+		</style>
         
     </head>
     <body>
@@ -41,8 +47,17 @@
 						<!-- 计划列表 -->
                         <div class="project-list">
 
-                            <table class="table table-hover">
+                            <table class="table table-hover planListTable">
                                 <tbody>
+                                
+                                	<tr>
+                                		<th>状态</th>
+                                		<th>计划标题</th>
+                                		<th>计划内容</th>
+                                		<th>计划进度</th>
+                                		<th>计划类型</th>
+                                		<th>操作</th>
+                                	</tr>
                                 
                                     <c:forEach var="plan" items="${plans }">
                                     
@@ -62,7 +77,7 @@
 	                                            <a href="#">${plan.planTitle }</a>
 	                                            <br/>
 	                                            <br/>
-	                                            <small>创建于 ${plan.createTimeString }</small>
+	                                            <small>提交： ${plan.createTimeString }</small>
 	                                        </td>
 	                                        
 	                                        <td class="project-content">
@@ -84,12 +99,16 @@
 	                                            <a href="javascript:void(0)" class="btn btn-white btn-sm" onclick="readPlan('${plan}')">
 	                                            	<i class="layui-icon">&#xe622;</i> 查看 
 	                                            </a>
+	                                            
+	                                            <!-- 完成了的计划，就无法修改及删除 -->
+	                                           <c:if test="${plan.status == 'E' }">
 	                                            <a href="javascript:void(0)" class="btn btn-white btn-sm" onclick="writePlan('${plan}')">
 	                                            	<i class="layui-icon">&#xe642;</i> 编辑 
 	                                            </a>
 	                                            <a href="javascript:void(0)" class="btn btn-white btn-sm" onclick="delPlan('${plan.planId}')">
 	                                            	<i class="layui-icon">&#xe640;</i> 删除
 	                                            </a>
+	                                           </c:if>
 	                                        </td>
 	                                    </tr>
                                     
