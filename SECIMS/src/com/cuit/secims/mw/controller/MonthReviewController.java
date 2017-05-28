@@ -3,6 +3,7 @@ package com.cuit.secims.mw.controller;
 import java.io.File;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -281,6 +282,69 @@ public class MonthReviewController {
 	}
 	
 	
+	// 查看PPT
+	@RequestMapping(value="getMonthPPTView",method=RequestMethod.GET)
+	public ModelAndView getMonthPPTViewPage(int reviewId, HttpServletRequest request) throws Exception{
+			
+			request.setCharacterEncoding("UTF-8");
+			
+			ArrayList<String> imgURList = new ArrayList<>();
+			
+			int userid = UserManager.getUserId();
+			
+			// 根据 ID 获取 月评信息
+			MonthReview month = this.service.getMonthByReviewId(reviewId);
+			
+			//获取项目根目录
+			String path = request.getSession()
+							.getServletContext()
+							.getRealPath(CommonConst.DIR_SEPARATOR1);
+			
+			String PPTFilePath = path+CommonConst.DIR_SEPARATOR1+month.getMonthFileURL();
+			
+			PPTFilePath = URLDecoder.decode(PPTFilePath, "UTF-8");
+			
+			// 文件路径 files+userID+monthFiles
+			String monthfileurl = CommonConst.FILES_DIR+CommonConst.DIR_SEPARATOR1
+					+ userid+CommonConst.DIR_SEPARATOR1
+					+ CommonConst.MONTH_FILE_DIR;
+			
+			String imgFilePath = path+CommonConst.DIR_SEPARATOR1
+						+monthfileurl+CommonConst.DIR_SEPARATOR1+reviewId;
+			
+			// PPT 转换 成图片
+			boolean isSuccess = PPT2ImgUtil.doPPT2Img(PPTFilePath, imgFilePath,imgURList);
+			
+			// 获取评语评论
+			MonthReviewResult monthResult = this.service.getMonthReviewResult(null, reviewId, 1);
+			
+			if (isSuccess) {
+				log.info("成功！++++++++++++++");
+			}
+			
+			ModelAndView mad = new ModelAndView("monthPPTView");
+			
+			mad.addObject("imgURLs", imgURList);
+			mad.addObject("imgTotalNum", imgURList.size());
+			
+			
+			String root = request.getSession()
+						.getServletContext().getContextPath();
+			
+			String  imgHead = root+CommonConst.DIR_SEPARATOR3
+					+CommonConst.FILES_DIR+CommonConst.DIR_SEPARATOR3
+					+userid+CommonConst.DIR_SEPARATOR3
+					+CommonConst.MONTH_FILE_DIR+CommonConst.DIR_SEPARATOR3;
+			
+			
+			mad.addObject("imgHead", imgHead+reviewId);
+			mad.addObject("reviewId", reviewId);
+			mad.addObject("comments", monthResult);
+			
+			return mad;
+		}
+	
+	
 	
 	//####### 月评考核/评定情况   #########
 	
@@ -295,8 +359,42 @@ public class MonthReviewController {
 	
 	// 获取月评信息
 	@RequestMapping(value="getMonthResult",method=RequestMethod.POST)
-	public void getMonthResult(){
+	public @ResponseBody String getMonthResult(){
 		
+		// 获取当前用户ID
+		int userId = UserManager.getUserId();
+		
+		// 获取级联数据 月评信息+月评评论成绩表 (获取导师评论信息)
+		List<MonthReview> month = this.service.getMonthResult(userId, 1);
+		
+		// X轴
+		String[] categories = new String[month.size()];
+		// 成绩
+		double[] data = new double[month.size()];
+		// 月评ID
+		int[] reviewId = new int[month.size()];
+		// 评语
+		String[] comments = new String[month.size()];
+		
+		for (int i = 0; month != null && i < month.size(); i++) {
+			categories[i] = new String("第"+(i+1)+"个月");
+			// 获取成绩
+			data[i] = month.get(i).getMonthResult().getResult() * 10;
+			reviewId[i] = month.get(i).getReviewId();
+			comments[i] = month.get(i).getMonthResult().getComment();
+		}
+		
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("categories", categories);
+		map.put("data", data);
+		map.put("reviewIds", reviewId);
+		map.put("comments", comments);
+		
+		String json = new Gson().toJson(map);
+		
+		System.out.println("json: "+json);
+		
+		return json ;
 	}
 	
 	

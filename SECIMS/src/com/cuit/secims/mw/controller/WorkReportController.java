@@ -59,6 +59,21 @@ public class WorkReportController {
 	}
 	
 	
+	
+	// 已发送的周报列表
+	@RequestMapping(value="getWeeklyReportJson",method=RequestMethod.GET)
+	public @ResponseBody String getWeeklyReportJson() throws Exception{
+			
+		// 设置用户ID
+		int userId = UserManager.getUserId();
+			
+//		List<WeekReportWork> weeklyAll = this.service.getWeeklyAll(1);
+		List<WeekReportWork> weeklys = this.service.getWeeklyByCondition(userId, "F");
+			
+		return new Gson().toJson(weeklys);
+	}
+	
+	
 	// 草稿箱
 	@RequestMapping(value="getWeeklyDraftBox",method=RequestMethod.GET)
 	public ModelAndView getWeeklyDraftBoxPage(){

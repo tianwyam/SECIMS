@@ -15,6 +15,7 @@ import com.cuit.secims.mw.pojo.LearningForumPosts;
 import com.cuit.secims.mw.service.LearningForumSV;
 import com.cuit.secims.mw.util.CommonUtils;
 import com.cuit.secims.mw.util.Result;
+import com.cuit.secims.mw.util.UserManager;
 import com.google.gson.Gson;
 
 /**
@@ -70,9 +71,11 @@ public class LearningForumController {
 	@RequestMapping(value="sendForumPosts",method=RequestMethod.POST)
 	public String addLearningForumPosts(LearningForumPosts posts){
 		
+		int userId = UserManager.getUserId();
+		
 		log.info("即将要发布的话题论坛帖子： "+posts);
 		
-		posts.setUserid(1); // 后面来修改
+		posts.setUserid(userId); 
 		
 		int count = this.service.addForumPosts(posts);
 		if (count > 0) {
@@ -110,8 +113,10 @@ public class LearningForumController {
 	@RequestMapping("getLearningForumMyPosts")
 	public ModelAndView getLearningForumMyPostsPage(){
 		
-		// 用户ID 要修改
-		List<LearningForumPosts> posts = this.service.getForumPostsByUserId(1); 
+		// 用户ID 
+		int userId = UserManager.getUserId();
+		
+		List<LearningForumPosts> posts = this.service.getForumPostsByUserId(userId); 
 		
 		ModelAndView mav = new ModelAndView("learningForumMyPosts");
 		mav.addObject("posts", posts);
@@ -127,8 +132,10 @@ public class LearningForumController {
 	@RequestMapping("getLearningForumMyReply")
 	public ModelAndView getLearningForumMyReplyPage() {
 
-		// 用户ID 要修改
-		List<LearningForumPosts> posts = this.service.getForumPostsByUserReply(1); 
+		// 用户ID
+		int userId = UserManager.getUserId();
+		
+		List<LearningForumPosts> posts = this.service.getForumPostsByUserReply(userId); 
 																				
 
 		ModelAndView mav = new ModelAndView("learningForumMyReply");
@@ -161,7 +168,8 @@ public class LearningForumController {
 	
 	
 	
-	//#################### 学习计划类型 #####################//
+	//#################### 学习论坛类型 #####################//
+	
 	
 	@RequestMapping(value="getLearningForumType")
 	public ModelAndView getLearningForumTypePage(String type){
