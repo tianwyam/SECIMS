@@ -5543,7 +5543,7 @@ dd.project-people {
 .chat-discussion {
     background: #eee;
     padding: 15px;
-    min-height: 200px;
+    min-height: 20px;
     /*overflow-y: auto;*/
 }
 
@@ -7599,6 +7599,8 @@ body.skin-3 {
     }
 }
 
+
+/*背景颜色*/
 .navbar-static-side {
     background: #1c2b36;
 }
