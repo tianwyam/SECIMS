@@ -52,7 +52,9 @@
 	<!--  根据用户ID/状态  查询所以的已发送/保存中的周报 -->
 	<select id="getWeeklyByCondition" resultMap="weeklyBasic" parameterType="map">
 		<![CDATA[
-			SELECT * FROM SECIMS.`WeekReportWork` w WHERE w.userid = #{userid} AND w.status = #{status}
+			SELECT * FROM SECIMS.`WeekReportWork` w 
+			WHERE w.userid = #{userid} AND w.status = #{status}
+			ORDER BY w.`createTime` DESC
 		]]>	
 	</select>
 	
