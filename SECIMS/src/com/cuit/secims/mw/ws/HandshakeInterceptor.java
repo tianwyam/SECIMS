@@ -7,6 +7,8 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
+import com.cuit.secims.mw.util.UserManager;
+
 
 
 public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor{
@@ -16,6 +18,10 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor{
 	public boolean beforeHandshake(ServerHttpRequest request,
 			ServerHttpResponse response, WebSocketHandler wsHandler,
 			Map<String, Object> attributes) throws Exception {
+		
+		// 获取 userId 存入session中
+		int userId = UserManager.getUserId();
+		attributes.put("userId", userId);
 		
 		System.out.println("++++++++++++++++ HandshakeInterceptor: beforeHandshake  ++++++++++++++"+attributes);
 		

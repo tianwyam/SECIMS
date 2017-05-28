@@ -1,7 +1,6 @@
 package com.cuit.secims.mw.ws;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -81,8 +80,12 @@ public class MyWebSocketHandler implements WebSocketHandler{
 		content.append(msgContent);
 
 		if (flag) {
+			
+			// 获取userID
+			Map<String, Object> attr = session.getHandshakeAttributes();
+			int userId = (Integer)attr.get("userId");
 			// 最后一片 // 存信息
-			collectMsgContent(content.toString(), postsId.intValue(), 1, postsId.intValue());
+			collectMsgContent(content.toString(), postsId.intValue(), userId, postsId.intValue());
 			// 重新创建一下新的
 			content = new StringBuffer();
 		}
