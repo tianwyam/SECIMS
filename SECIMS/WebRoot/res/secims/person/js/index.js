@@ -1,5 +1,47 @@
 
 
+
+
+$(function() {
+    $('#exampleTableEvents').bootstrapTable({
+      url: "/SECIMS/res/test.json",
+      search: false,
+      pagination: true,
+      showRefresh: true,
+      showToggle: true,
+      showColumns: true,
+      pageSize: 2,
+      pageList: [2,5,10,20,25,50,100],
+      iconSize: 'outline',
+    });
+    
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 var websocket;
 
 $(function() {
@@ -75,7 +117,7 @@ window.onbeforeunload=function(){
 
 
 
-
+*/
 
 
 

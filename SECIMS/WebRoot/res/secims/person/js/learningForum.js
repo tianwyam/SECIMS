@@ -64,11 +64,10 @@ $(function(){
 		$(".content").val(html);
 		
 		
+		layer.msg("发布话题论坛帖子成功！！！",{icon:6,time:3000});
+		
 		// 表单 提交
-		$("#forumId").submit();
-		
-		
-		layer.msg("发布话题论坛帖子成功！！！",{icon:6,time:5000});
+		setTimeout('$("#forumId").submit();',3000);
 		
 	});
 	
