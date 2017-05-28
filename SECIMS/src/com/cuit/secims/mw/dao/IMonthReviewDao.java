@@ -19,6 +19,9 @@ public interface IMonthReviewDao {
 	// 根据 userID 获取 月评状况
 	public List<MonthReview> getMonthByUserId(int userid);
 	
+	// 根据 reviewId获取月评信息
+	public MonthReview getMonthByReviewId(int reviewId);
+	
 	
 	// 增加月评详情
 	public int addMonthReview(MonthReview month);
@@ -27,6 +30,9 @@ public interface IMonthReviewDao {
 	
 	// 删除 上传的月评PPT情况
 	public int delMonth(int id);
+	
+	// 获取级联数据  月评信息+月评评论成绩表
+	public List<MonthReview> getMonthResult(Map map);
 	
 	
 	//###################### 企业导师 操作 月评PPT 相关  ##########################
