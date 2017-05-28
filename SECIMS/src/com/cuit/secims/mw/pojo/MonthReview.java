@@ -109,6 +109,22 @@ public class MonthReview {
 				+ "&" + createTime;
 	}
 
+	
+	
+	
+	
+	
+	// 月评评定结果/打分情况
+	private MonthReviewResult monthResult;
 
 
+	public MonthReviewResult getMonthResult() {
+		return monthResult;
+	}
+
+	public void setMonthResult(MonthReviewResult monthResult) {
+		this.monthResult = monthResult;
+	}
+	
+	
 }
