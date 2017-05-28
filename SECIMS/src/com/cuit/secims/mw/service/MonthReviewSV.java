@@ -25,6 +25,12 @@ public class MonthReviewSV {
 	}
 	
 	
+	// 根据 reviewId获取月评信息
+	public MonthReview getMonthByReviewId(int reviewId){
+		return this.dao.getMonthByReviewId(reviewId);
+	}
+	
+	
 	// 增加月评详情
 	public int addMonthReview(MonthReview month){
 		return this.dao.addMonthReview(month);
@@ -38,6 +44,21 @@ public class MonthReviewSV {
 	}
 	
 	
+	
+	/**
+	 * 获取级联数据  月评信息+月评评论成绩表
+	 * @param userId 被查询月评的用户ID
+	 * @param roleType 查询评论月评的用户类型（1：企业导师/2：企业经理）
+	 * @return 
+	 */
+	public List<MonthReview> getMonthResult(int userId, int roleType){
+		
+		HashMap<String, Object> map = new HashMap<>();
+		map.put("userId", userId);
+		map.put("roleType", roleType);
+		
+		return this.dao.getMonthResult(map);
+	}
 	
 	
 	//###################### 企业导师 操作 月评PPT ##########################
