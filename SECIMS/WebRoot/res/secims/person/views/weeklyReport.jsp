@@ -11,6 +11,8 @@
     <%-- 加载公共 JS/CSS --%>
     <%@include file="../../common/commonJS.jsp" %>
 
+	<link rel="stylesheet" href="/SECIMS/res/bootstrap-table/bootstrap-table.min.css" />
+	<script type="text/javascript" src="/SECIMS/res/bootstrap-table/bootstrap-table.min.js"></script>
 
   </head>
   
@@ -27,6 +29,7 @@
 		                    <span class="label label-warning weeklyNum">${weeklyNum }</span>
 	                    </a>
 	                    
+	                    <!-- 
 	                    <div class="mail-tools tooltip-demo m-t-md">
 	                    
 	                        <div class="btn-group pull-right" title="上一页">
@@ -42,10 +45,10 @@
 	                        	<i class="layui-icon">&#x1002;</i> 刷新
 	                        </button>
 	                        
-	                    </div>
-	                </div>
+	                    </div>  -->
+	                </div> 
 	                
-	                
+	                <!-- 
 	                <div class="mail-box">
 	
 	                    <table class="table table-hover table-mail">
@@ -58,7 +61,7 @@
 	                                </td>
 	                                <td class="mail-subject"><a href="#">${weekly.title }</a>
 	                                </td>
-	                                <td class="text-right mail-date">${weekly.createTime.year }年${weekly.createTime.month }月${weekly.createTime.day }日</td>
+	                                <td class="text-right mail-date">${weekly.createTimeString }</td>
 	                                <td class="text-right">
 		                                <button class="btn btn-white btn-sm" onclick="ToViewWeekly('${weekly.weekRepId}')">
 		                                	<span class="glyphicon glyphicon-folder-open"></span>  查看
@@ -74,8 +77,22 @@
 
 	                        </tbody>
 	                    </table>
-	
-	
+	                    
+	                </div>   -->
+	                
+	                <div class="mail-box">
+	                	<table id="weeklyTable" data-height="400" class="table table-hover table-mail">
+							<thead>
+						<!-- 	<tr>
+									<th data-field="weekRepId">ID</th>
+									<th data-field="recipient">接受人</th>
+									<th data-field="title">标题</th>
+									<th data-field="createTime">创建时间</th>
+									<th data-field="startTime">开始时间</th>
+									<th data-field="endTime">结束时间</th>
+								</tr>  -->
+							</thead>
+						</table>
 	                </div>
 	            </div>
 	            
